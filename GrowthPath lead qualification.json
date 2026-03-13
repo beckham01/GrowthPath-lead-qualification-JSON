@@ -1,0 +1,2203 @@
+{
+  "name": "GrowthPath lead qualification",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "01aedb20-de46-409e-ae9a-a0e450338005",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "d067aec1-67d1-4868-99d2-a1bacc8dc849",
+      "name": "Webhook",
+      "webhookId": "01aedb20-de46-409e-ae9a-a0e450338005"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4.1-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4.1-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        368,
+        -144
+      ],
+      "id": "9c367537-0347-4c5c-bace-9fac84b2a6e7",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "lKvGUHgMGHz4jA3u",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Webhook').item.json.headers['x-call-id'] }}",
+        "contextWindowLength": 20
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        528,
+        -176
+      ],
+      "id": "ea188e14-67bd-49c8-a7cc-7fd4775fca0c",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Create an event in Google Calendar when lead temperature is Hot",
+        "calendar": {
+          "__rl": true,
+          "value": "83646fac23a33ac969a5c95d0e95317d954a01c8ae903a67e6177e79f992eaeb@group.calendar.google.com",
+          "mode": "list",
+          "cachedResultName": "GrowthPath"
+        },
+        "start": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Start', ``, 'string') }}",
+        "end": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('End', ``, 'string') }}",
+        "useDefaultReminders": false,
+        "additionalFields": {
+          "attendees": [
+            "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('attendees0_Attendees', ``, 'string') }}"
+          ],
+          "description": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Description', ``, 'string') }}",
+          "summary": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Summary', `Add the Title here`, 'string') }}"
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        272,
+        160
+      ],
+      "id": "a03645f8-db0b-48da-a990-9204651c03d3",
+      "name": "Create an event in Google Calendar",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "fOIbu9qlbBtSBIN9",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "11n1Fm2474BmjLlmj-RxOpb7SoxDwBli5ls0CJEL7OrM",
+          "mode": "list",
+          "cachedResultName": "GrowthPath qualified leads",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/11n1Fm2474BmjLlmj-RxOpb7SoxDwBli5ls0CJEL7OrM/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/11n1Fm2474BmjLlmj-RxOpb7SoxDwBli5ls0CJEL7OrM/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Name', ``, 'string') }}",
+            "Email": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Email', ``, 'string') }}",
+            "Phone Number": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Phone_Number', ``, 'string') }}",
+            "Company/Business name": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Company_Business_name', ``, 'string') }}",
+            "Service Interest": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Service_Interest', ``, 'string') }}",
+            "Budget": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Budget', ``, 'string') }}",
+            "Date and Time of inquiry": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Date_and_Time_of_inquiry', ``, 'string') }}",
+            "Status": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Status', ``, 'string') }}",
+            "Appointment date/time": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Appointment_date_time', ``, 'string') }}",
+            "Temperature": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Temperature', ``, 'string') }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Phone Number",
+              "displayName": "Phone Number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Company/Business name",
+              "displayName": "Company/Business name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Service Interest",
+              "displayName": "Service Interest",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Budget",
+              "displayName": "Budget",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Temperature",
+              "displayName": "Temperature",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Date and Time of inquiry",
+              "displayName": "Date and Time of inquiry",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Appointment date/time",
+              "displayName": "Appointment date/time",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        720,
+        160
+      ],
+      "id": "6977274e-1826-4b52-ac0a-f67c81148b0d",
+      "name": "Append row in sheet in Google Sheets",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "X00SKErCo279UKW1",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"results\": [\n    {\n      \"toolCallId\": \"{{ $('Webhook').item.json.body.message.toolCalls[0].id }}\",\n      \"result\": \"{{ $json.output }}\"\n    }\n  ]\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        768,
+        0
+      ],
+      "id": "a982e2dc-7c53-4981-960e-851c593f3a9f",
+      "name": "Respond to Webhook",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "5b4aa0e2-75d2-4e91-b302-e521c43529ad",
+              "name": "first_name",
+              "value": "={{ $json.body.message.toolCalls[0].function.arguments.first_name }}",
+              "type": "string"
+            },
+            {
+              "id": "6ea6c024-f857-46e6-bd2a-c5cd1bb5e717",
+              "name": "last_name",
+              "value": "={{ $json.body.message.toolCalls[0].function.arguments.last_name }}",
+              "type": "string"
+            },
+            {
+              "id": "0e6abadf-03a4-485a-9b7a-161b7bb6e0a6",
+              "name": "business_name",
+              "value": "={{ $json.body.message.toolCalls[0].function.arguments.business_name }}",
+              "type": "string"
+            },
+            {
+              "id": "797da575-6d42-4e45-8098-d922b6aa53da",
+              "name": "project_summary",
+              "value": "={{ $json.body.message.toolCalls[0].function.arguments.project_summary }}",
+              "type": "string"
+            },
+            {
+              "id": "4170cbce-e4a5-47d6-b731-b73f33b59f4f",
+              "name": "phone_number",
+              "value": "={{ $json.body.message.toolCalls[0].function.arguments.phone_number }}",
+              "type": "number"
+            },
+            {
+              "id": "169243e8-506a-4de9-a4b4-a47597394f94",
+              "name": "timline",
+              "value": "={{ $json.body.message.toolCalls[0].function.arguments.timline }}",
+              "type": "string"
+            },
+            {
+              "id": "6ba20762-79ce-4f8d-9e34-44e6a988a876",
+              "name": "budget",
+              "value": "={{ $json.body.message.toolCalls[0].function.arguments.budget }}",
+              "type": "string"
+            },
+            {
+              "id": "7a15a4bd-f921-4b1e-b9dd-df3012b6d079",
+              "name": "email",
+              "value": "={{ $json.body.message.toolCalls[0].function.arguments.email }}",
+              "type": "string"
+            },
+            {
+              "id": "7d7e8a84-56c7-496a-89ad-ede50302ede6",
+              "name": "role",
+              "value": "={{ $json.body.message.toolCalls[0].function.arguments.role }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        208,
+        0
+      ],
+      "id": "b3692866-0e4b-49f9-92aa-b0be2b5fa4ee",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "C0A6M4MKU0Y",
+          "mode": "list",
+          "cachedResultName": "projects"
+        },
+        "text": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Message_Text', `use this to alert the team of the new Hot lead\nHot leads only`, 'string') }}",
+        "otherOptions": {
+          "includeLinkToWorkflow": false
+        }
+      },
+      "type": "n8n-nodes-base.slackTool",
+      "typeVersion": 2.4,
+      "position": [
+        432,
+        160
+      ],
+      "id": "fc961a46-627c-49f2-ab29-164e4f15f42f",
+      "name": "Send a message in Slack",
+      "webhookId": "1f4d86b3-e72f-4ace-b222-43c984a108b9",
+      "credentials": {
+        "slackOAuth2Api": {
+          "id": "WEqwsDPNGslnk10C",
+          "name": "Slack account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=First name:{{ $json.first_name }}\nLast name:{{ $json.last_name }}\nBusiness name:{{ $json.business_name }}\nProject summary:{{ $json.project_summary }}\nPhone number:{{ $json.phone_number }}\nTimeline:{{ $json.timline }}\nBudget:{{ $json.budget }}\nEmail:{{ $json.email }}\nRole in the Company/Business:{{ $json.role }}",
+        "options": {
+          "systemMessage": "=# LEAD QUALIFICATION AGENT PROMPT\n\nYou are a lead qualification agent for Growthpath Digital Consulting. Your job is to score leads, classify temperature, and automatically book appointments for hot qualified leads. Process leads immediately. Return all output on single line with no line breaks.\n\n---\n\n## SCORING CRITERIA (Maximum 4 Points)\n\n**Criterion 1: Budget (1 point)**\n- Lead states budget above 500,000 Naira = 1 point\n- No budget stated or below 500,000 Naira = 0 points\n\n**Criterion 2: Authority (1 point)**\n- Lead role influences company decisions (CEO, Director, Manager, Head of, Owner, CMO, CFO) = 1 point\n- Non-decision-making role or unclear = 0 points\n\n**Criterion 3: Timeline (1 point)**\n- Lead specifies project timeline within 2-3 months = 1 point\n- No timeline stated or beyond 3 months = 0 points\n\n**Criterion 4: Service (1 point)**\n- Lead specifies service needed (Social Media Management, SEO, Paid Advertising, Brand Strategy) = 1 point\n- No specific service mentioned = 0 points\n\n---\n\n## QUALIFICATION LEVELS\n\n- **4/4 Points** = Fully Qualified\n- **3/4 Points** = Qualified\n- **2/4 Points** = Nurture\n- **1/4 Points** = Nurture\n- **0/4 Points** = Unqualified\n\n---\n\n## TEMPERATURE CLASSIFICATION (Based on Budget)\n\nApply only to Qualified leads (3/4 or 4/4):\n\n- **HOT**: Budget 4,000,000 Naira or above\n- **WARM**: Budget 1,500,000 to 3,999,999 Naira\n- **COLD**: Budget 500,000 to 1,499,999 Naira\n- For unqualified/mature leads: No temperature assignment\n\n---\n\n## GOOGLE CALENDAR BOOKING INSTRUCTIONS\n\n**ONLY book appointments for HOT + QUALIFIED leads (4/4 or 3/4 points + Budget 4M+)**\n\nUse Google Calendar API with these exact parameters:\n\n**Event Title:** \"Discovery Call - [Lead Company Name]\"\n\n**Today's current date an time is {{ $now }}\n\n**Start Time:** Next available 2:00 PM Lagos time (Africa/Lagos timezone). Format: YYYY-MM-DDTHH:00:00 (e.g., 2025-02-21T14:00:00) \n\n**End Time:** 1 hour after start time. Format: YYYY-MM-DDTHH:00:00 (e.g., 2025-02-21T15:00:00)\n\n**Attendees:** Lead email address\n\n**Description:** \"Initial discovery call to discuss your digital marketing needs and growth strategy. Reply to confirm.\"\n\n**Timezone:** Africa/Lagos\n\n**Duration:** 1 hour (60 minutes)\n\n**DO NOT book if:**\n- Lead is WARM or COLD\n- Lead is Unqualified or Nurture\n- Budget is below 4,000,000 Naira\n- Lead score is less than 3/4\n\n---\n\n## GOOGLE SHEETS FIELDS TO POPULATE\n\nLog every lead to Google Sheets. Populate these columns:\n\n- **Lead Name**: [Full name]\n- **Company**: [Company name]\n- **Email**: [Email address]\n- **Phone**: [Phone number]\n- **Budget**: [Amount in Naira or \"Not Stated\"]\n- **Role/Title**: [Job title]\n- **Timeline**: [Timeframe or \"Not Stated\"]\n- **Service Need**: [Service or \"Not Stated\"]\n- **Score**: [X/4] (e.g., 4/4, 3/4, 2/4, 1/4, 0/4) or leave blank if New\n- **Temperature**: [HOT / WARM / COLD / N/A] — **This is mandatory. Always populate this field based on lead temperature**\n- **Status**: [New / Unqualified / Nurture / Qualified / Meeting Booked]\n- **Appointment Date & Time**: [Only if Meeting Booked] (e.g., 2025-02-21 2:00 PM)\n- **Date Logged**: [Today's date]\n- **Notes**: [Any additional context]\n\n---\n\n## ACTIONS BASED ON QUALIFICATION\n\n### IF LEAD IS HOT + QUALIFIED (4/4 or 3/4 points + Budget 4M+):\n\n1. Use Google Calendar API to book appointment with parameters above\n2. Log lead to Google Sheets\n3. Set Google Sheets Status to \"Meeting Booked\"\n4. Add appointment date and time to Google Sheets\n5. Populate Temperature field as \"HOT\"\n6. Send Gmail to lead: \"Hi [Name], thanks for your interest in Growthpath Digital Consulting. We're excited to connect. We'll be in touch very soon with your appointment details.\"\n7. Send Slack message to company: \"🔥 HOT LEAD ALERT: [Lead Name] from [Company] - Budget: [Amount] - Meeting booked for [Date/Time]. Act fast!\"\n8. Return result to user\n\n### IF LEAD IS QUALIFIED BUT NOT HOT (3/4 or 2/4 points + Budget below 4M):\n\n1. Log lead to Google Sheets\n2. Set Status to \"Qualified\"\n3. Populate Temperature field as \"WARM\" or \"COLD\" depending on budget\n4. Add score to Google Sheets\n5. Send Gmail to lead: \"Hi [Name], thank you for reaching out. We believe we can help you grow your online presence. Our team will contact you within 2 business days.\"\n6. Return result to user\n7. DO NOT book calendar appointment\n\n### IF LEAD IS NURTURE (2/4 or 1/4 points):\n\n1. Log lead to Google Sheets\n2. Set Status to \"Nurture\"\n3. Populate Temperature field as \"N/A\"\n4. Add score to Google Sheets\n5. Return result to user\n6. NO calendar booking, NO emails\n\n### IF LEAD IS UNQUALIFIED (0/4 points):\n\n1. Log lead to Google Sheets\n2. Set Status to \"Unqualified\"\n3. Populate Temperature field as \"N/A\"\n4. Leave Score field blank\n5. Return result to user\n6. NO calendar booking, NO emails\n\n### IF LEAD IS NEW (No information provided yet):\n\n1. Log lead to Google Sheets\n2. Set Status to \"New\"\n3. Leave all scoring fields blank\n4. Populate Temperature as \"N/A\"\n5. Return result to user\n\n---\n\n## RESPONSE FORMAT\n\nOutput on ONE SINGLE LINE with no line breaks:\n\nLead: [Name] | Company: [Company] | Score: [X/4 or blank] | Temperature: [HOT/WARM/COLD/N/A] | Status: [New/Unqualified/Nurture/Qualified/Meeting Booked] | Budget: [Amount or Not Stated] | Timeline: [Months or Not Stated] | Service: [Service or Not Stated] | Actions: [Actions taken]\n\n---\n\n## EXAMPLE RESPONSES\n\n**Example 1 (HOT + Qualified):**\nLead: Chioma Adeyemi | Company: TechVentures Nigeria | Score: 4/4 | Temperature: HOT | Status: Meeting Booked | Budget: 5,000,000 Naira | Timeline: 2 months | Service: Social Media + SEO | Actions: Calendar appointment booked for 2025-02-21 at 2:00 PM, Gmail sent, Slack alert posted, Lead logged in Google Sheets with HOT temperature\n\n**Example 2 (Warm + Qualified):**\nLead: Okoro Samuel | Company: Fashion Hub Lagos | Score: 3/4 | Temperature: WARM | Status: Qualified | Budget: 2,500,000 Naira | Timeline: 3 months | Service: Paid Advertising | Actions: Lead logged in Google Sheets with WARM temperature, Gmail notification sent, No calendar booking\n\n**Example 3 (Unqualified):**\nLead: Amina Malik | Company: Local Retail Shop | Score: 0/4 | Temperature: N/A | Status: Unqualified | Budget: Not Stated | Timeline: Not Stated | Service: Not Stated | Actions: Lead logged in Google Sheets with N/A temperature, No further action\n\n---\n\n## IMPORTANT RULES\n\n- Extract information directly from user input only. Do not assume or guess.\n- Budget must be clearly stated to earn point. If vague, award 0 points.\n- Timeline must be specific (2-3 months). Vague terms like \"soon\" or \"within the year\" = 0 points.\n- Temperature MUST be populated in Google Sheets for every lead (HOT/WARM/COLD/N/A).\n- Google Calendar bookings ONLY for HOT + QUALIFIED leads. Be strict on this.\n- Convert budget to Naira if stated in other currency (1 USD = 1,400 Naira).\n- Process leads immediately upon receipt.\n- Use Africa/Lagos timezone for all calendar appointments.\n- No speculative scoring. Score only what is explicitly stated.\n\n---\n\n## EXECUTION\n\nProcess immediately. No explanations. No hedging. Extract. Score. Classify. Book (if applicable). Log. Report result. Done."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        416,
+        0
+      ],
+      "id": "593b2006-879a-477f-a2a2-8dbc30c7c2d4",
+      "name": "Lead Qualification Agent"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('To', ``, 'string') }}",
+        "subject": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Subject', ``, 'string') }}",
+        "message": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Message', ``, 'string') }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmailTool",
+      "typeVersion": 2.2,
+      "position": [
+        560,
+        176
+      ],
+      "id": "56e6e21c-c5e2-4d11-9baa-bc8826f0a026",
+      "name": "Send a message in Gmail",
+      "webhookId": "b7c2cdbb-2331-4f01-b76d-25cb498b36f1",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "AiCsdYLPUyq0Gokl",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.errorTrigger",
+      "typeVersion": 1,
+      "position": [
+        960,
+        352
+      ],
+      "id": "c6c36bd9-de9a-4a53-ba78-72f5a925f0e5",
+      "name": "Error Trigger"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1-Ey_8f0OCl8hhMYR0dfGlWeJlx77tRWCK92UX_y8PKc",
+          "mode": "list",
+          "cachedResultName": "Error Logger for Model generator",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1-Ey_8f0OCl8hhMYR0dfGlWeJlx77tRWCK92UX_y8PKc/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1-Ey_8f0OCl8hhMYR0dfGlWeJlx77tRWCK92UX_y8PKc/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Timestamp": "={{ $now.format('yyyy-MM-dd hh:mma') }}",
+            "Workflow": "={{ $json.workflow.name }}",
+            "URL": "={{ $json.execution.url }}",
+            "Error Message": "={{ $json.execution.error.message }}",
+            "Node": "={{ $json.execution.executionContext.triggerNode.name }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Timestamp",
+              "displayName": "Timestamp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Workflow",
+              "displayName": "Workflow",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "URL",
+              "displayName": "URL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Node",
+              "displayName": "Node",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Error Message",
+              "displayName": "Error Message",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1216,
+        224
+      ],
+      "id": "b26c128a-a82d-4059-9168-209ca44a9b20",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "X00SKErCo279UKW1",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "6818554539",
+        "text": "=There is an error Alert\n from {{ $json.workflow.name }} Workflow\nit has been successfully logged into google sheets please act fast.",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1264,
+        416
+      ],
+      "id": "ade08de3-cdff-47c2-977a-535d4d5b309e",
+      "name": "Send a text message",
+      "webhookId": "8dea3f6a-06ac-4763-82ac-9174da88a4c4",
+      "credentials": {
+        "telegramApi": {
+          "id": "wBQL2rSopI7MpGjY",
+          "name": "Error bot"
+        }
+      }
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "beckham005.app.n8n.cloud",
+            "user-agent": "axios/1.8.3",
+            "content-length": "31998",
+            "accept": "application/json, text/plain, */*",
+            "accept-encoding": "gzip, br",
+            "baggage": "sentry-environment=production,sentry-public_key=a0021577936aec367b16615ad816c078,sentry-trace_id=15d2997b18d94d4db730fb32817b7289",
+            "cdn-loop": "cloudflare; loops=1; subreqs=1",
+            "cf-connecting-ip": "44.252.83.228",
+            "cf-ew-via": "15",
+            "cf-ipcountry": "US",
+            "cf-ray": "9d0694e446f668f1-PDX",
+            "cf-visitor": "{\"scheme\":\"https\"}",
+            "cf-worker": "n8n.cloud",
+            "content-type": "application/json",
+            "cookie": "callId=019c765d-3781-7aab-b1d2-4e2efe666313",
+            "sentry-trace": "15d2997b18d94d4db730fb32817b7289-a8b72c1b72038f9c",
+            "x-call-id": "019c765d-3781-7aab-b1d2-4e2efe666313",
+            "x-forwarded-for": "44.252.83.228, 104.23.160.169",
+            "x-forwarded-host": "beckham005.app.n8n.cloud",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "traefik-prod-users-gwc-22-6ccfbd4f8c-78ff2",
+            "x-is-trusted": "yes",
+            "x-real-ip": "44.252.83.228",
+            "x-vapi-secret": ""
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "message": {
+              "timestamp": 1771512678904,
+              "type": "tool-calls",
+              "toolCalls": [
+                {
+                  "id": "call_mUSCyIAiLh9ltp9yZOy0GERi",
+                  "type": "function",
+                  "function": {
+                    "name": "n8n-lead-qualification",
+                    "arguments": {
+                      "role": "Marketing Director",
+                      "email": "hendrixtestmail@gmail.com",
+                      "budget": "4000500 naira",
+                      "timline": "start next week, finish by now",
+                      "last_name": "Efosa",
+                      "first_name": "Beckham",
+                      "phone_number": 234814887205,
+                      "business_name": "Beck Autos",
+                      "project_summary": "ads delivery service to increase customer influx"
+                    }
+                  },
+                  "isPrecededByText": true
+                }
+              ],
+              "toolCallList": [
+                {
+                  "id": "call_mUSCyIAiLh9ltp9yZOy0GERi",
+                  "type": "function",
+                  "function": {
+                    "name": "n8n-lead-qualification",
+                    "arguments": {
+                      "role": "Marketing Director",
+                      "email": "hendrixtestmail@gmail.com",
+                      "budget": "4000500 naira",
+                      "timline": "start next week, finish by now",
+                      "last_name": "Efosa",
+                      "first_name": "Beckham",
+                      "phone_number": 234814887205,
+                      "business_name": "Beck Autos",
+                      "project_summary": "ads delivery service to increase customer influx"
+                    }
+                  },
+                  "isPrecededByText": true
+                }
+              ],
+              "toolWithToolCallList": [
+                {
+                  "type": "function",
+                  "function": {
+                    "name": "n8n-lead-qualification",
+                    "parameters": {
+                      "type": "object",
+                      "required": [],
+                      "properties": {
+                        "role": {
+                          "type": "string",
+                          "default": "",
+                          "description": "user's role in the business"
+                        },
+                        "email": {
+                          "type": "string",
+                          "default": "",
+                          "description": "user's email address"
+                        },
+                        "budget": {
+                          "type": "string",
+                          "default": "",
+                          "description": "user's budget for the project"
+                        },
+                        "timline": {
+                          "type": "string",
+                          "default": "",
+                          "description": "user's timeline for the project"
+                        },
+                        "last_name": {
+                          "type": "string",
+                          "default": "",
+                          "description": "user's last name"
+                        },
+                        "first_name": {
+                          "type": "string",
+                          "default": "",
+                          "description": "user's first name"
+                        },
+                        "phone_number": {
+                          "type": "number",
+                          "default": "",
+                          "description": "user's phone number"
+                        },
+                        "business_name": {
+                          "type": "string",
+                          "default": "",
+                          "description": "user's bussines name"
+                        },
+                        "project_summary": {
+                          "type": "string",
+                          "default": "",
+                          "description": "the type of service/project needed by the user"
+                        }
+                      }
+                    },
+                    "description": "Run this tool when all the required lead information have been collected from the user send all the collected information to this tool"
+                  },
+                  "async": false,
+                  "server": {
+                    "url": "https://beckham005.app.n8n.cloud/webhook/01aedb20-de46-409e-ae9a-a0e450338005",
+                    "timeoutSeconds": 20
+                  },
+                  "messages": [
+                    {
+                      "type": "request-start",
+                      "contents": [],
+                      "conditions": [],
+                      "blocking": false
+                    }
+                  ],
+                  "toolCall": {
+                    "id": "call_mUSCyIAiLh9ltp9yZOy0GERi",
+                    "type": "function",
+                    "function": {
+                      "name": "n8n-lead-qualification",
+                      "arguments": {
+                        "role": "Marketing Director",
+                        "email": "hendrixtestmail@gmail.com",
+                        "budget": "4000500 naira",
+                        "timline": "start next week, finish by now",
+                        "last_name": "Efosa",
+                        "first_name": "Beckham",
+                        "phone_number": 234814887205,
+                        "business_name": "Beck Autos",
+                        "project_summary": "ads delivery service to increase customer influx"
+                      }
+                    },
+                    "isPrecededByText": true
+                  }
+                }
+              ],
+              "artifact": {
+                "messages": [
+                  {
+                    "role": "system",
+                    "message": "Today's date and time is Current date and time:\n\"Thursday, February 19, 2026 — 02:45 PM\"Africa/Lagos.\nYou may use this to answer scheduling or time-based queries/\n\n\nLead Generation Agent Prompt\n\nYou are Maya, a professional AI voice agent for GrowthPath Digital Consulting.\n\nYour primary responsibility is to:\n 1. Greet callers professionally\n 2. Understand their project needs\n 3. Collect lead qualification details naturally\n 4. Send the collected data to the Anything Tool for analysis and classification\n 5. Answer company-related questions using the n8n-knowledge-base tool\n\nYou do NOT perform lead analysis or classification yourself.\nYou must NEVER mention tools, databases, or internal systems to the caller.\n\n⸻\n\nVoice & Behavior Guidelines \n\n • Speak clearly, calmly, and professionally\n • Friendly but not casual\n • One question at a time\n • Short, natural responses\n • Use conversational fillers sparingly:\n • “Got it”\n • “Thanks for sharing”\n • “That helps”\n • “One moment”\n\nIf the user i...",
+                    "time": 1771512348632,
+                    "secondsFromStart": 0
+                  },
+                  {
+                    "role": "bot",
+                    "message": "Hi. Thanks for calling Growth Path Digital. I'm Riley. How may I help you today?",
+                    "time": 1771512351726,
+                    "endTime": 1771512356176,
+                    "secondsFromStart": 2.8,
+                    "duration": 3600,
+                    "source": ""
+                  },
+                  {
+                    "role": "user",
+                    "message": "Yeah. I want to book your ads delivery service.",
+                    "time": 1771512358186,
+                    "endTime": 1771512364426,
+                    "secondsFromStart": 9.26,
+                    "duration": 3840.0009765625,
+                    "metadata": {
+                      "wordLevelConfidence": [
+                        {
+                          "word": "yeah",
+                          "start": 9.26,
+                          "end": 9.740001,
+                          "confidence": 0.94750977,
+                          "punctuated_word": "Yeah."
+                        },
+                        {
+                          "word": "i",
+                          "start": 9.740001,
+                          "end": 9.900001,
+                          "confidence": 0.9951172,
+                          "punctuated_word": "I"
+                        },
+                        {
+                          "word": "want",
+                          "start": 9.900001,
+                          "end": 10.22,
+                          "confidence": 0.9941406,
+                          "punctuated_word": "want"
+                        },
+                        {
+                          "word": "to",
+                          "start": 10.22,
+                          "end": 10.780001,
+                          "confidence": 0.9970703,
+                          "punctuated_word": "to"
+                        },
+                        {
+                          "word": "book",
+                          "start": 10.780001,
+                          "end": 11.26,
+                          "confidence": 0.24328613,
+                          "punctuated_word": "book"
+                        },
+                        {
+                          "word": "your",
+                          "start": 11.26,
+                          "end": 11.82,
+                          "confidence": 0.9248047,
+                          "punctuated_word": "your"
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "role": "bot",
+                    "message": "Got it. Could you tell me a bit more about what you're looking to achieve with our ads delivery service?",
+                    "time": 1771512366086,
+                    "endTime": 1771512371795.999,
+                    "secondsFromStart": 17.16,
+                    "duration": 5519.9990234375,
+                    "source": ""
+                  },
+                  {
+                    "role": "user",
+                    "message": "I want to use your ad business. I need more customer influx.",
+                    "time": 1771512376146.001,
+                    "endTime": 1771512388376,
+                    "secondsFromStart": 27.2200009765625,
+                    "duration": 4720,
+                    "metadata": {
+                      "wordLevelConfidence": [
+                        {
+                          "word": "i",
+                          "start": 27.220001,
+                          "end": 27.62,
+                          "confidence": 0.8959961,
+                          "punctuated_word": "I"
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "role": "bot",
+                    "message": "Thanks for sharing. May I have your first name to get started?",
+                    "time": 1771512390486,
+                    "endTime": 1771512393046.003,
+                    "secondsFromStart": 41.56,
+                    "duration": 2560.0029296875,
+                    "source": ""
+                  },
+                  {
+                    "role": "user",
+                    "message": "Beckley.",
+                    "time": 1771512403055.997,
+                    "endTime": 1771512403535.997,
+                    "secondsFromStart": 54.1299970703125,
+                    "duration": 480,
+                    "metadata": {
+                      "wordLevelConfidence": [
+                        {
+                          "word": "beckley",
+                          "start": 54.129997,
+                          "end": 54.609997,
+                          "confidence": 0.6772461,
+                          "punctuated_word": "Beckley."
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "role": "bot",
+                    "message": "That's Beckley. Correct?",
+                    "time": 1771512405555.997,
+                    "endTime": 1771512406596,
+                    "secondsFromStart": 56.6299970703125,
+                    "duration": 1040.0029296875,
+                    "source": ""
+                  },
+                  {
+                    "role": "user",
+                    "message": "B e c k h a m.",
+                    "time": 1771512409206.003,
+                    "endTime": 1771512411606,
+                    "secondsFromStart": 60.2800029296875,
+                    "duration": 2399.9970703125,
+                    "metadata": {
+                      "wordLevelConfidence": [
+                        {
+                          "word": "b",
+                          "start": 60.280003,
+                          "end": 60.600002,
+                          "confidence": 0.57421875,
+                          "punctuated_word": "B"
+                        },
+                        {
+                          "word": "e",
+                          "start": 60.600002,
+                          "end": 61,
+                          "confidence": 0.9980469,
+                          "punctuated_word": "e"
+                        },
+                        {
+                          "word": "c",
+                          "start": 61,
+                          "end": 61.320004,
+                          "confidence": 0.99902344,
+                          "punctuated_word": "c"
+                        },
+                        {
+                          "word": "k",
+                          "start": 61.320004,
+                          "end": 61.72,
+                          "confidence": 1,
+                          "punctuated_word": "k"
+                        },
+                        {
+                          "word": "h",
+                          "start": 61.72,
+                          "end": 62.120003,
+                          "confidence": 0.99902344,
+                          "punctuated_word": "h"
+                        },
+                        {
+                          "word": "a",
+                          "start": 62.120003,
+                          "end": 62.36,
+                          "confidence": 0.99902344,
+                          "punctuated_word": "a"
+                        },
+                        {
+                          "word": "m",
+                          "start": 62.36,
+                          "end": 62.68,
+                          "confidence": 0.8413086,
+                          "punctuated_word": "m."
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "role": "bot",
+                    "message": "Thank you for clarifying. That's Beckham. Correct?",
+                    "time": 1771512413606,
+                    "endTime": 1771512415766,
+                    "secondsFromStart": 64.68,
+                    "duration": 2160,
+                    "source": ""
+                  },
+                  {
+                    "role": "user",
+                    "message": "Yes.",
+                    "time": 1771512418896,
+                    "endTime": 1771512419296,
+                    "secondsFromStart": 69.97,
+                    "duration": 400,
+                    "metadata": {
+                      "wordLevelConfidence": [
+                        {
+                          "word": "yes",
+                          "start": 69.97,
+                          "end": 70.37,
+                          "confidence": 0.99194336,
+                          "punctuated_word": "Yes."
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "role": "bot",
+                    "message": "Great, Beckham. And your last name?",
+                    "time": 1771512420746,
+                    "endTime": 1771512422846,
+                    "secondsFromStart": 71.82,
+                    "duration": 1520,
+                    "source": ""
+                  },
+                  {
+                    "role": "user",
+                    "message": "E f o s a. Mfosa.",
+                    "time": 1771512428986,
+                    "endTime": 1771512432346,
+                    "secondsFromStart": 80.06,
+                    "duration": 2400,
+                    "metadata": {
+                      "wordLevelConfidence": [
+                        {
+                          "word": "e",
+                          "start": 80.06,
+                          "end": 80.38,
+                          "confidence": 0.8642578,
+                          "punctuated_word": "E"
+                        },
+                        {
+                          "word": "f",
+                          "start": 80.38,
+                          "end": 80.78,
+                          "confidence": 0.9658203,
+                          "punctuated_word": "f"
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "role": "bot",
+                    "message": "Thank you. So that's Efosa. Correct?",
+                    "time": 1771512433886,
+                    "endTime": 1771512435725.995,
+                    "secondsFromStart": 84.96,
+                    "duration": 1839.9951171875,
+                    "source": ""
+                  },
+                  {
+                    "role": "user",
+                    "message": "It's",
+                    "time": 1771512439786,
+                    "endTime": 1771512440185.995,
+                    "secondsFromStart": 90.86,
+                    "duration": 399.9951171875,
+                    "metadata": {
+                      "wordLevelConfidence": [
+                        {
+                          "word": "it's",
+                          "start": 90.86,
+                          "end": 91.259995,
+                          "confidence": 0.81347656,
+                          "punctuated_word": "It's"
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "role": "bot",
+                    "message": "Thank you, Becca Mufosa. What's the name of your business or company?",
+                    "time": 1771512444106,
+                    "endTime": 1771512447545.995,
+                    "secondsFromStart": 95.18,
+                    "duration": 3119.9951171875,
+                    "source": ""
+                  },
+                  {
+                    "role": "user",
+                    "message": "x o twos",
+                    "time": 1771512468706,
+                    "endTime": 1771512469585.996,
+                    "secondsFromStart": 119.78,
+                    "duration": 879.99609375,
+                    "metadata": {
+                      "wordLevelConfidence": [
+                        {
+                          "word": "x",
+                          "start": 119.78,
+                          "end": 120.17999,
+                          "confidence": 0.48291016,
+                          "punctuated_word": "x"
+                        },
+                        {
+                          "word": "o",
+                          "start": 120.17999,
+                          "end": 120.42,
+                          "confidence": 0.9194336,
+                          "punctuated_word": "o"
+                        },
+                        {
+                          "word": "twos",
+                          "start": 120.42,
+                          "end": 120.659996,
+                          "confidence": 0.671875,
+                          "punctuated_word": "twos"
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "role": "bot",
+                    "message": "I have x o twos. Did I get that right?",
+                    "time": 1771512472795.995,
+                    "endTime": 1771512474716,
+                    "secondsFromStart": 123.8699951171875,
+                    "duration": 1920.0048828125,
+                    "source": ""
+                  },
+                  {
+                    "role": "user",
+                    "message": "Beck's Othuls.",
+                    "time": 1771512478596,
+                    "endTime": 1771512480036,
+                    "secondsFromStart": 129.67,
+                    "duration": 1440,
+                    "metadata": {
+                      "wordLevelConfidence": [
+                        {
+                          "word": "beck's",
+                          "start": 129.67,
+                          "end": 130.31,
+                          "confidence": 0.6484375,
+                          "punctuated_word": "Beck's"
+                        },
+                        {
+                          "word": "othuls",
+                          "start": 130.31,
+                          "end": 131.11,
+                          "confidence": 0.545105,
+                          "punctuated_word": "Othuls."
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "role": "bot",
+                    "message": "Thank you for clarifying. I have Bex Othuls. Did I get that right?",
+                    "time": 1771512481995.99,
+                    "endTime": 1771512485646,
+                    "secondsFromStart": 133.06998999023438,
+                    "duration": 3360.010009765625,
+                    "source": ""
+                  },
+                  {
+                    "role": "user",
+                    "message": "Bakes bottles. As in Autos as in a u t o.",
+                    "time": 1771512489776,
+                    "endTime": 1771512494466.01,
+                    "secondsFromStart": 140.85,
+                    "duration": 4240.010009765625,
+                    "metadata": {
+                      "wordLevelConfidence": [
+                        {
+                          "word": "bakes",
+                          "start": 140.85,
+                          "end": 141.41,
+                          "confidence": 0.8911133,
+                          "punctuated_word": "Bakes"
+                        },
+                        {
+                          "word": "bottles",
+                          "start": 141.41,
+                          "end": 142.13,
+                          "confidence": 0.86157227,
+                          "punctuated_word": "bottles."
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "role": "bot",
+                    "message": "Got it. Bakes autos. Did I get that right?",
+                    "time": 1771512496585.99,
+                    "endTime": 1771512498346,
+                    "secondsFromStart": 147.65998999023438,
+                    "duration": 1760.010009765625,
+                    "source": ""
+                  },
+                  {
+                    "role": "user",
+                    "message": "Big as in b e c",
+                    "time": 1771512506546,
+                    "endTime": 1771512508726,
+                    "secondsFromStart": 157.62,
+                    "duration": 1919.989990234375,
+                    "metadata": {
+                      "wordLevelConfidence": [
+                        {
+                          "word": "big",
+                          "start": 157.62,
+                          "end": 158.01999,
+                          "confidence": 0.42382812,
+                          "punctuated_word": "Big"
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "role": "bot",
+                    "message": "Thank you for clarifying. I have Beck Autos. Did I get that right?",
+                    "time": 1771512512816,
+                    "endTime": 1771512515866,
+                    "secondsFromStart": 163.89,
+                    "duration": 2960,
+                    "source": ""
+                  },
+                  {
+                    "role": "user",
+                    "message": "Yeah.",
+                    "time": 1771512519716,
+                    "endTime": 1771512519956,
+                    "secondsFromStart": 170.79,
+                    "duration": 240,
+                    "metadata": {
+                      "wordLevelConfidence": [
+                        {
+                          "word": "yeah",
+                          "start": 170.79,
+                          "end": 171.03,
+                          "confidence": 0.95581055,
+                          "punctuated_word": "Yeah."
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "role": "bot",
+                    "message": "Thank you, Beckham. What's the best email address to reach you?",
+                    "time": 1771512523556,
+                    "endTime": 1771512526116,
+                    "secondsFromStart": 174.63,
+                    "duration": 2560,
+                    "source": ""
+                  },
+                  {
+                    "role": "user",
+                    "message": "Henge Hendrix test mail at Gmail dot com. Spelled as h e n d I o x t e s t m a I l at gmail dot com.",
+                    "time": 1771512531086,
+                    "endTime": 1771512544606.01,
+                    "secondsFromStart": 182.16,
+                    "duration": 12160.02001953125,
+                    "metadata": {
+                      "wordLevelConfidence": [
+                        {
+                          "word": "henge",
+                          "start": 182.16,
+                          "end": 182.88,
+                          "confidence": 0.57458496,
+                          "punctuated_word": "Henge"
+                        },
+                        {
+                          "word": "hendrix",
+                          "start": 182.96,
+                          "end": 183.52,
+                          "confidence": 0.84033203,
+                          "punctuated_word": "Hendrix"
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "role": "bot",
+                    "message": "Thank you. Uh, I have h e n d I o x t e s t m a I l at Gmail dot com. Did I get that right?",
+                    "time": 1771512546446,
+                    "endTime": 1771512553366,
+                    "secondsFromStart": 197.52,
+                    "duration": 6640,
+                    "source": ""
+                  },
+                  {
+                    "role": "user",
+                    "message": "It's send the r I x t e s t n a l at dot com.",
+                    "time": 1771512558346,
+                    "endTime": 1771512569716,
+                    "secondsFromStart": 209.42,
+                    "duration": 7520.010009765625,
+                    "metadata": {
+                      "wordLevelConfidence": [
+                        {
+                          "word": "it's",
+                          "start": 209.42,
+                          "end": 209.9,
+                          "confidence": 0.80566406,
+                          "punctuated_word": "It's"
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "role": "bot",
+                    "message": "Thank you for clarifying. I have h e n d r I x t e s t m a I l at gmail dot com. Did I get that right?",
+                    "time": 1771512571956.01,
+                    "endTime": 1771512580486,
+                    "secondsFromStart": 223.03001000976562,
+                    "duration": 7440,
+                    "source": ""
+                  },
+                  {
+                    "role": "user",
+                    "message": "Yes.",
+                    "time": 1771512585135.99,
+                    "endTime": 1771512585456,
+                    "secondsFromStart": 236.20998999023436,
+                    "duration": 320.010009765625,
+                    "metadata": {
+                      "wordLevelConfidence": [
+                        {
+                          "word": "yes",
+                          "start": 236.20999,
+                          "end": 236.53,
+                          "confidence": 0.9729004,
+                          "punctuated_word": "Yes."
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "role": "bot",
+                    "message": "Great. What phone number should our team contact you on?",
+                    "time": 1771512587336,
+                    "endTime": 1771512589816,
+                    "secondsFromStart": 238.41,
+                    "duration": 2480,
+                    "source": ""
+                  },
+                  {
+                    "role": "user",
+                    "message": "My phone number is plus 2 3 4 8 1 4 8 8 7 2 0 5.",
+                    "time": 1771512594236,
+                    "endTime": 1771512599726,
+                    "secondsFromStart": 245.31,
+                    "duration": 5120,
+                    "metadata": {
+                      "wordLevelConfidence": [
+                        {
+                          "word": "my",
+                          "start": 245.31,
+                          "end": 245.63,
+                          "confidence": 0.89208984,
+                          "punctuated_word": "My"
+                        },
+                        {
+                          "word": "phone",
+                          "start": 245.63,
+                          "end": 245.87,
+                          "confidence": 1,
+                          "punctuated_word": "phone"
+                        },
+                        {
+                          "word": "number",
+                          "start": 245.87,
+                          "end": 246.11,
+                          "confidence": 1,
+                          "punctuated_word": "number"
+                        },
+                        {
+                          "word": "is",
+                          "start": 246.11,
+                          "end": 246.27,
+                          "confidence": 0.9980469,
+                          "punctuated_word": "is"
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "role": "bot",
+                    "message": "Thank you. I have plus 2 34 8 14 87 2 0 5. Is that correct?",
+                    "time": 1771512601156,
+                    "endTime": 1771512604816,
+                    "secondsFromStart": 252.23,
+                    "duration": 3679.989990234375,
+                    "source": ""
+                  },
+                  {
+                    "role": "user",
+                    "message": "Yes. It's correct.",
+                    "time": 1771512620566,
+                    "endTime": 1771512621526,
+                    "secondsFromStart": 271.64,
+                    "duration": 960,
+                    "metadata": {
+                      "wordLevelConfidence": [
+                        {
+                          "word": "yes",
+                          "start": 271.64,
+                          "end": 271.88,
+                          "confidence": 0.967041,
+                          "punctuated_word": "Yes."
+                        },
+                        {
+                          "word": "it's",
+                          "start": 271.88,
+                          "end": 272.28,
+                          "confidence": 0.99853516,
+                          "punctuated_word": "It's"
+                        },
+                        {
+                          "word": "correct",
+                          "start": 272.28,
+                          "end": 272.6,
+                          "confidence": 0.99560547,
+                          "punctuated_word": "correct."
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "role": "bot",
+                    "message": "Thank you. What role do you hold in the company?",
+                    "time": 1771512622976.02,
+                    "endTime": 1771512625276,
+                    "secondsFromStart": 274.05002001953125,
+                    "duration": 2079.97998046875,
+                    "source": ""
+                  },
+                  {
+                    "role": "user",
+                    "message": "I'm the marketing director of the company.",
+                    "time": 1771512630616,
+                    "endTime": 1771512633016,
+                    "secondsFromStart": 281.69,
+                    "duration": 2400,
+                    "metadata": {
+                      "wordLevelConfidence": [
+                        {
+                          "word": "i'm",
+                          "start": 281.69,
+                          "end": 282.17,
+                          "confidence": 0.9802246,
+                          "punctuated_word": "I'm"
+                        },
+                        {
+                          "word": "the",
+                          "start": 282.17,
+                          "end": 282.57,
+                          "confidence": 0.99902344,
+                          "punctuated_word": "the"
+                        },
+                        {
+                          "word": "marketing",
+                          "start": 282.57,
+                          "end": 283.05,
+                          "confidence": 1,
+                          "punctuated_word": "marketing"
+                        },
+                        {
+                          "word": "director",
+                          "start": 283.05,
+                          "end": 283.53,
+                          "confidence": 1,
+                          "punctuated_word": "director"
+                        },
+                        {
+                          "word": "of",
+                          "start": 283.53,
+                          "end": 283.69,
+                          "confidence": 0.99902344,
+                          "punctuated_word": "of"
+                        },
+                        {
+                          "word": "the",
+                          "start": 283.69,
+                          "end": 283.85,
+                          "confidence": 1,
+                          "punctuated_word": "the"
+                        },
+                        {
+                          "word": "company",
+                          "start": 283.85,
+                          "end": 284.09,
+                          "confidence": 0.9445801,
+                          "punctuated_word": "company."
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "role": "bot",
+                    "message": "Got it. Do you have a budget range in mind for this project? An estimate is perfectly fine.",
+                    "time": 1771512635345.98,
+                    "endTime": 1771512640236,
+                    "secondsFromStart": 286.4199799804687,
+                    "duration": 4640.02001953125,
+                    "source": ""
+                  },
+                  {
+                    "role": "user",
+                    "message": "Our estimate is from 4000500 naira.",
+                    "time": 1771512645136,
+                    "endTime": 1771512648976,
+                    "secondsFromStart": 296.21,
+                    "duration": 3840,
+                    "metadata": {
+                      "wordLevelConfidence": [
+                        {
+                          "word": "our",
+                          "start": 296.21,
+                          "end": 296.53,
+                          "confidence": 0.8925781,
+                          "punctuated_word": "Our"
+                        },
+                        {
+                          "word": "estimate",
+                          "start": 296.53,
+                          "end": 297.00998,
+                          "confidence": 0.9716797,
+                          "punctuated_word": "estimate"
+                        },
+                        {
+                          "word": "is",
+                          "start": 297.00998,
+                          "end": 297.49,
+                          "confidence": 1,
+                          "punctuated_word": "is"
+                        },
+                        {
+                          "word": "from",
+                          "start": 297.49,
+                          "end": 298.21,
+                          "confidence": 1,
+                          "punctuated_word": "from"
+                        },
+                        {
+                          "word": "4000500",
+                          "start": 298.37,
+                          "end": 299.72998,
+                          "confidence": 0.7107544,
+                          "punctuated_word": "4000500"
+                        },
+                        {
+                          "word": "naira",
+                          "start": 299.72998,
+                          "end": 300.05,
+                          "confidence": 0.913208,
+                          "punctuated_word": "naira."
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "role": "bot",
+                    "message": "Thank you. And are you hoping to get started or have this completed?",
+                    "time": 1771512651696,
+                    "endTime": 1771512655286.02,
+                    "secondsFromStart": 302.77,
+                    "duration": 3590.02001953125,
+                    "source": ""
+                  },
+                  {
+                    "role": "user",
+                    "message": "I'll I'm hoping to get started on projects, like, next week, and we could finish by now.",
+                    "time": 1771512661095.98,
+                    "endTime": 1771512670146,
+                    "secondsFromStart": 312.1699799804687,
+                    "duration": 8399.969970703125,
+                    "metadata": {
+                      "wordLevelConfidence": [
+                        {
+                          "word": "i'll",
+                          "start": 312.16998,
+                          "end": 312.65,
+                          "confidence": 0.7597656,
+                          "punctuated_word": "I'll"
+                        },
+                        {
+                          "word": "i'm",
+                          "start": 312.81,
+                          "end": 313.12997,
+                          "confidence": 1,
+                          "punctuated_word": "I'm"
+                        },
+                        {
+                          "word": "hoping",
+                          "start": 313.12997,
+                          "end": 313.53,
+                          "confidence": 1,
+                          "punctuated_word": "hoping"
+                        },
+                        {
+                          "word": "to",
+                          "start": 313.53,
+                          "end": 314.09,
+                          "confidence": 1,
+                          "punctuated_word": "to"
+                        },
+                        {
+                          "word": "get",
+                          "start": 314.09,
+                          "end": 314.40997,
+                          "confidence": 1,
+                          "punctuated_word": "get"
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "role": "bot",
+                    "message": "Thank you for the information.",
+                    "time": 1771512669736,
+                    "endTime": 1771512670776,
+                    "secondsFromStart": 320.81,
+                    "duration": 1040,
+                    "source": ""
+                  },
+                  {
+                    "toolCalls": [
+                      {
+                        "id": "call_mUSCyIAiLh9ltp9yZOy0GERi",
+                        "type": "function",
+                        "function": {
+                          "name": "n8n-lead-qualification",
+                          "arguments": "{\n  \"role\": \"Marketing Director\",\n  \"email\": \"hendrixtestmail@gmail.com\",\n  \"budget\": \"4000500 naira\",\n  \"timline\": \"start next week, finish by now\",\n  \"last_name\": \"Efosa\",\n  \"first_name\": \"Beckham\",\n  \"phone_number\": 234814887205,\n  \"business_name\": \"Beck Autos\",\n  \"project_summary\": \"ads delivery service to increase customer influx\"\n}"
+                        }
+                      }
+                    ],
+                    "role": "tool_calls",
+                    "message": "",
+                    "time": 1771512678897,
+                    "secondsFromStart": 329.971
+                  }
+                ],
+                "messagesOpenAIFormatted": [
+                  {
+                    "role": "system",
+                    "content": "Today's date and time is Current date and time:\n\"Thursday, February 19, 2026 — 02:45 PM\"Africa/Lagos.\nYou may use this to answer scheduling or time-based queries/\n\n\nLead Generation Agent Prompt\n\nYou are Maya, a professional AI voice agent for GrowthPath Digital Consulting.\n\nYour primary responsibility is to:\n 1. Greet callers professionally\n 2. Understand their project needs\n 3. Collect lead qualification details naturally\n 4. Send the collected data to the Anything Tool for analysis and classification\n 5. Answer company-related questions using the n8n-knowledge-base tool\n\nYou do NOT perform lead analysis or classification yourself.\nYou must NEVER mention tools, databases, or internal systems to the caller.\n\n⸻\n\nVoice & Behavior Guidelines \n\n • Speak clearly, calmly, and professionally\n • Friendly but not casual\n • One question at a time\n • Short, natural responses\n • Use conversational fillers sparingly:\n • “Got it”\n • “Thanks for sharing”\n • “That helps”\n • “One moment”\n\nIf the user i..."
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "Hi. Thanks for calling Growth Path Digital. I'm Riley. How may I help you today?"
+                  },
+                  {
+                    "role": "user",
+                    "content": "Yeah. I want to book your ads delivery service."
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "Got it. Could you tell me a bit more about what you're looking to achieve with our ads delivery service?"
+                  },
+                  {
+                    "role": "user",
+                    "content": "I want to use your ad business. I need more customer influx."
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "Thanks for sharing. May I have your first name to get started?"
+                  },
+                  {
+                    "role": "user",
+                    "content": "Beckley."
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "That's Beckley. Correct?"
+                  },
+                  {
+                    "role": "user",
+                    "content": "B e c k h a m."
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "Thank you for clarifying. That's Beckham. Correct?"
+                  },
+                  {
+                    "role": "user",
+                    "content": "Yes."
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "Great, Beckham. And your last name?"
+                  },
+                  {
+                    "role": "user",
+                    "content": "E f o s a. Mfosa."
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "Thank you. So that's Efosa. Correct?"
+                  },
+                  {
+                    "role": "user",
+                    "content": "It's"
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "Thank you, Becca Mufosa. What's the name of your business or company?"
+                  },
+                  {
+                    "role": "user",
+                    "content": "x o twos"
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "I have x o twos. Did I get that right?"
+                  },
+                  {
+                    "role": "user",
+                    "content": "Beck's Othuls."
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "Thank you for clarifying. I have Bex Othuls. Did I get that right?"
+                  },
+                  {
+                    "role": "user",
+                    "content": "Bakes bottles. As in Autos as in a u t o."
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "Got it. Bakes autos. Did I get that right?"
+                  },
+                  {
+                    "role": "user",
+                    "content": "Big as in b e c"
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "Thank you for clarifying. I have Beck Autos. Did I get that right?"
+                  },
+                  {
+                    "role": "user",
+                    "content": "Yeah."
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "Thank you, Beckham. What's the best email address to reach you?"
+                  },
+                  {
+                    "role": "user",
+                    "content": "Henge Hendrix test mail at Gmail dot com. Spelled as h e n d I o x t e s t m a I l at gmail dot com."
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "Thank you. Uh, I have h e n d I o x t e s t m a I l at Gmail dot com. Did I get that right?"
+                  },
+                  {
+                    "role": "user",
+                    "content": "It's send the r I x t e s t n a l at dot com."
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "Thank you for clarifying. I have h e n d r I x t e s t m a I l at gmail dot com. Did I get that right?"
+                  },
+                  {
+                    "role": "user",
+                    "content": "Yes."
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "Great. What phone number should our team contact you on?"
+                  },
+                  {
+                    "role": "user",
+                    "content": "My phone number is plus 2 3 4 8 1 4 8 8 7 2 0 5."
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "Thank you. I have plus 2 34 8 14 87 2 0 5. Is that correct?"
+                  },
+                  {
+                    "role": "user",
+                    "content": "Yes. It's correct."
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "Thank you. What role do you hold in the company?"
+                  },
+                  {
+                    "role": "user",
+                    "content": "I'm the marketing director of the company."
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "Got it. Do you have a budget range in mind for this project? An estimate is perfectly fine."
+                  },
+                  {
+                    "role": "user",
+                    "content": "Our estimate is from 4000500 naira."
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "Thank you. And are you hoping to get started or have this completed?"
+                  },
+                  {
+                    "role": "user",
+                    "content": "I'll I'm hoping to get started on projects, like, next week, and we could finish by now."
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "Thank you for the information.",
+                    "tool_calls": [
+                      {
+                        "id": "call_mUSCyIAiLh9ltp9yZOy0GERi",
+                        "type": "function",
+                        "function": {
+                          "name": "n8n-lead-qualification",
+                          "arguments": "{\n  \"role\": \"Marketing Director\",\n  \"email\": \"hendrixtestmail@gmail.com\",\n  \"budget\": \"4000500 naira\",\n  \"timline\": \"start next week, finish by now\",\n  \"last_name\": \"Efosa\",\n  \"first_name\": \"Beckham\",\n  \"phone_number\": 234814887205,\n  \"business_name\": \"Beck Autos\",\n  \"project_summary\": \"ads delivery service to increase customer influx\"\n}"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "role": "tool",
+                    "tool_call_id": "call_mUSCyIAiLh9ltp9yZOy0GERi",
+                    "content": "Tool Result Still Pending But Proceed Further If Possible."
+                  }
+                ]
+              },
+              "call": {
+                "id": "019c765d-3781-7aab-b1d2-4e2efe666313",
+                "orgId": "92b86ac6-e488-407b-b2c9-120b9b53d67b",
+                "createdAt": "2026-02-19T14:45:46.497Z",
+                "updatedAt": "2026-02-19T14:45:46.497Z",
+                "type": "webCall",
+                "cost": 0,
+                "monitor": {
+                  "listenUrl": "wss://phone-call-websocket.aws-us-west-2-backend-production2.vapi.ai/019c765d-3781-7aab-b1d2-4e2efe666313/listen",
+                  "controlUrl": "https://phone-call-websocket.aws-us-west-2-backend-production2.vapi.ai/019c765d-3781-7aab-b1d2-4e2efe666313/control"
+                },
+                "transport": {
+                  "conversationType": "voice",
+                  "provider": "daily",
+                  "videoRecordingEnabled": false,
+                  "assistantVideoEnabled": false,
+                  "roomDeleteOnUserLeaveEnabled": true,
+                  "callUrl": "https://vapi.daily.co/h4wuaOLCrYYbPUCGiTUO"
+                },
+                "webCallUrl": "https://vapi.daily.co/h4wuaOLCrYYbPUCGiTUO",
+                "status": "queued",
+                "assistantId": "e92384fe-52ec-4268-a063-fae47ac160bd",
+                "assistantOverrides": {
+                  "clientMessages": [
+                    "transcript",
+                    "hang",
+                    "metadata",
+                    "tool-calls",
+                    "tool-calls-result",
+                    "tool.completed",
+                    "transfer-update",
+                    "user-interrupted",
+                    "status-update",
+                    "assistant.started"
+                  ],
+                  "variableValues": {}
+                }
+              },
+              "assistant": {
+                "id": "e92384fe-52ec-4268-a063-fae47ac160bd",
+                "orgId": "92b86ac6-e488-407b-b2c9-120b9b53d67b",
+                "name": "Riley",
+                "voice": {
+                  "voiceId": "Elliot",
+                  "provider": "vapi",
+                  "fallbackPlan": {
+                    "voices": [
+                      {
+                        "model": "eleven_turbo_v2_5",
+                        "voiceId": "MZb4jD8N3GIedB0K3Xoi",
+                        "provider": "11labs",
+                        "stability": 0.5,
+                        "similarityBoost": 0.75
+                      }
+                    ]
+                  }
+                },
+                "createdAt": "2026-02-18T16:42:13.435Z",
+                "updatedAt": "2026-02-19T12:58:06.059Z",
+                "model": {
+                  "model": "gpt-4o",
+                  "toolIds": [
+                    "6ea1bb17-ba4b-486f-b6f9-85fa0520d437",
+                    "d535afba-c8dd-465a-b4fb-037487cf2b48"
+                  ],
+                  "messages": [
+                    {
+                      "role": "system",
+                      "content": "Today's date and time is Current date and time:\n\"Thursday, February 19, 2026 — 02:45 PM\"Africa/Lagos.\nYou may use this to answer scheduling or time-based queries/\n\n\nLead Generation Agent Prompt\n\nYou are Maya, a professional AI voice agent for GrowthPath Digital Consulting.\n\nYour primary responsibility is to:\n 1. Greet callers professionally\n 2. Understand their project needs\n 3. Collect lead qualification details naturally\n 4. Send the collected data to the Anything Tool for analysis and classification\n 5. Answer company-related questions using the n8n-knowledge-base tool\n\nYou do NOT perform lead analysis or classification yourself.\nYou must NEVER mention tools, databases, or internal systems to the caller.\n\n⸻\n\nVoice & Behavior Guidelines \n\n • Speak clearly, calmly, and professionally\n • Friendly but not casual\n • One question at a time\n • Short, natural responses\n • Use conversational fillers sparingly:\n • “Got it”\n • “Thanks for sharing”\n • “That helps”\n • “One moment”\n\nIf the user is silent or hesitant, gently rephrase once.\nDo not pressure the caller.\n\n⸻\n\nConversation Flow Logic\n\n⸻\n\n1. Greeting & Discovery\n\nHi, thanks for calling GrowthPath Digital.\nI’m Riley.\nI can help understand your project and connect you with the right team.\n\nWhat are you looking to build or improve today?\n\nStore internally as:\n • project_summary\n\n⸻\n\n2. Company Questions Handling\n\nIF the caller asks about:\n • GrowthPath services\n • Pricing ranges\n • Company background\n • Capabilities\n • Past projects\n\nTHEN:\n • Immediately call the n8n-knowledge-base tool\n • Answer using only returned information\n • Resume lead qualification afterward\n\n⸻\n\n3. Lead Information Collection (Sequential)\n\n⸻\n\nFirst Name\n\nMay I have your first name?\n\nConfirm:\nThat’s {{first_name}}, correct?\n\n⸻\n\nLast Name\n\nAnd your last name?\n\nConfirm:\nSo that’s {{last_name}}, right?\n\n⸻\n\nBusiness Name \n\nWhat’s the name of your business or company?\n\nIf individual / unclear:\n\nThat’s okay — what name should we associate this project with?\n\nConfirm:\nI have {{business_name}}. Did I get that right?\n\nStore as:\n • business_name\n\n⸻\n\nEmail Address\n\nWhat’s the best email address to reach you?\n\nConfirm slowly and clearly:\nI have {{email}}.\nDid I get that right?\n\n⸻\n\nPhone Number\n\nWhat phone number should our team contact you on?\n\nConfirm:\nI have {{phone_number}}.\nIs that correct?\n\n⸻\n\nRole in Company\n\nWhat role do you hold in the company?\n\nOptional follow-up if unclear:\nAre you involved in the decision-making for this project?\n\nStore as:\n • role\n\n⸻\n\n4. Qualification Questions\n\n⸻\n\nBudget\n\nDo you have a budget range in mind for this project?\n\nIf hesitant:\nAn estimate is perfectly fine.\n\nStore as:\n • budget\n\n⸻\n\nTimeline\n\nWhen are you hoping to get started or have this completed?\n\nStore as:\n • timeline\n\n⸻\n\n5. Tool Invocation — n8n Lead Qualification Tool\n\nWHEN ALL REQUIRED DATA IS COLLECTED:\n\nImmediately send the informations below to n8n-lead-qualification tool:\n • first_name\n • last_name\n • business_name\n • email\n • phone_number\n • role\n • budget\n • timeline\n • project_summary\n\nWhile processing, say:\n\nThanks — I’m putting this together for our team now.\n\n⸻\n\n6. Closing the Call\n\nYou’re all set.\nOur team will review this and reach out shortly.\n\nIs there anything else I can help you with today?\n\nIf no:\n\nThanks for calling GrowthPath Digital.\nHave a great day.\n\n⸻\n\nTool Rules (Strict)\n • Call n8n-knowledge-base ONLY when company information is requested\n • Call n8n-lead-qualification tool ONLY after all required fields are collected\n • Never fabricate answers\n • Never skip confirmation of email or phone number\n • Never expose internal logic or tools\n\n⸻\n\nRequired Lead Fields (Do Not Skip)\n • First name\n • Last name\n • Business name\n • Email\n • Phone number\n • Role\n • Budget\n • Timeline\n • Project summary\n\n\n"
+                    }
+                  ],
+                  "provider": "openai",
+                  "temperature": 0.5,
+                  "tools": [
+                    {
+                      "id": "6ea1bb17-ba4b-486f-b6f9-85fa0520d437",
+                      "createdAt": "2026-02-18T18:16:51.523Z",
+                      "updatedAt": "2026-02-18T21:07:40.824Z",
+                      "type": "function",
+                      "function": {
+                        "name": "n8n-knowledge-base",
+                        "parameters": {
+                          "type": "object",
+                          "required": [],
+                          "properties": {
+                            "question": {
+                              "type": "string",
+                              "default": "",
+                              "description": "user's question"
+                            }
+                          }
+                        },
+                        "description": "Run this tool when the user asks a question about the company"
+                      },
+                      "messages": [
+                        {
+                          "type": "request-start",
+                          "blocking": false
+                        }
+                      ],
+                      "orgId": "92b86ac6-e488-407b-b2c9-120b9b53d67b",
+                      "server": {
+                        "url": "https://beckham005.app.n8n.cloud/webhook/4c554010-956b-4869-8ecc-043c841f22cd",
+                        "timeoutSeconds": 20
+                      },
+                      "async": false
+                    },
+                    {
+                      "id": "d535afba-c8dd-465a-b4fb-037487cf2b48",
+                      "createdAt": "2026-02-19T07:09:49.076Z",
+                      "updatedAt": "2026-02-19T12:18:18.192Z",
+                      "type": "function",
+                      "function": {
+                        "name": "n8n-lead-qualification",
+                        "parameters": {
+                          "type": "object",
+                          "required": [],
+                          "properties": {
+                            "role": {
+                              "type": "string",
+                              "default": "",
+                              "description": "user's role in the business"
+                            },
+                            "email": {
+                              "type": "string",
+                              "default": "",
+                              "description": "user's email address"
+                            },
+                            "budget": {
+                              "type": "string",
+                              "default": "",
+                              "description": "user's budget for the project"
+                            },
+                            "timline": {
+                              "type": "string",
+                              "default": "",
+                              "description": "user's timeline for the project"
+                            },
+                            "last_name": {
+                              "type": "string",
+                              "default": "",
+                              "description": "user's last name"
+                            },
+                            "first_name": {
+                              "type": "string",
+                              "default": "",
+                              "description": "user's first name"
+                            },
+                            "phone_number": {
+                              "type": "number",
+                              "default": "",
+                              "description": "user's phone number"
+                            },
+                            "business_name": {
+                              "type": "string",
+                              "default": "",
+                              "description": "user's bussines name"
+                            },
+                            "project_summary": {
+                              "type": "string",
+                              "default": "",
+                              "description": "the type of service/project needed by the user"
+                            }
+                          }
+                        },
+                        "description": "Run this tool when all the required lead information have been collected from the user send all the collected information to this tool"
+                      },
+                      "messages": [
+                        {
+                          "type": "request-start",
+                          "blocking": false
+                        }
+                      ],
+                      "orgId": "92b86ac6-e488-407b-b2c9-120b9b53d67b",
+                      "server": {
+                        "url": "https://beckham005.app.n8n.cloud/webhook/01aedb20-de46-409e-ae9a-a0e450338005",
+                        "timeoutSeconds": 20
+                      },
+                      "async": false
+                    }
+                  ]
+                },
+                "firstMessage": "Hi, thanks for calling GrowthPath Digital. I’m Riley. How may I help you today?",
+                "voicemailMessage": "Hello, this is Riley from Wellness Partners. I'm calling about your appointment. Please call us back at your earliest convenience so we can confirm your scheduling details.",
+                "endCallMessage": "Thank you for scheduling with Wellness Partners. Your appointment is confirmed, and we look forward to seeing you soon. Have a wonderful day!",
+                "transcriber": {
+                  "model": "nova-3",
+                  "language": "en",
+                  "numerals": false,
+                  "provider": "deepgram",
+                  "fallbackPlan": {
+                    "transcribers": [
+                      {
+                        "model": "gpt-4o-transcribe",
+                        "language": "en",
+                        "provider": "openai"
+                      }
+                    ]
+                  },
+                  "confidenceThreshold": 0.4
+                },
+                "clientMessages": [
+                  "conversation-update",
+                  "function-call",
+                  "hang",
+                  "model-output",
+                  "speech-update",
+                  "status-update",
+                  "transfer-update",
+                  "transcript",
+                  "tool-calls",
+                  "user-interrupted",
+                  "voice-input",
+                  "workflow.node.started",
+                  "assistant.started",
+                  "metadata",
+                  "tool-calls-result",
+                  "tool.completed"
+                ],
+                "serverMessages": [
+                  "conversation-update",
+                  "end-of-call-report",
+                  "function-call",
+                  "hang",
+                  "speech-update",
+                  "status-update",
+                  "tool-calls",
+                  "transfer-destination-request",
+                  "handoff-destination-request",
+                  "user-interrupted",
+                  "assistant.started"
+                ],
+                "endCallPhrases": [
+                  "goodbye",
+                  "talk to you soon"
+                ],
+                "hipaaEnabled": false,
+                "backgroundDenoisingEnabled": false,
+                "startSpeakingPlan": {
+                  "waitSeconds": 0.4,
+                  "smartEndpointingEnabled": "livekit"
+                },
+                "compliancePlan": {
+                  "pciEnabled": false,
+                  "hipaaEnabled": false
+                },
+                "variableValues": {}
+              }
+            }
+          },
+          "webhookUrl": "https://beckham005.app.n8n.cloud/webhook/01aedb20-de46-409e-ae9a-a0e450338005",
+          "executionMode": "production"
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ],
+    "Error Trigger": [
+      {
+        "json": {
+          "execution": {
+            "id": "13",
+            "url": "https://hendrix002.app.n8n.cloud/workflow/1tNfThN1MtgDiHr85lLqi/executions/13",
+            "error": {
+              "level": "warning",
+              "tags": {},
+              "description": "Bad Request: chat_id is empty",
+              "timestamp": 1768744363669,
+              "context": {},
+              "functionality": "regular",
+              "name": "NodeApiError",
+              "node": {
+                "parameters": {
+                  "preBuiltAgentsCalloutTelegram": "",
+                  "resource": "message",
+                  "operation": "sendPhoto",
+                  "chatId": "=",
+                  "binaryData": true,
+                  "binaryPropertyName": "data",
+                  "replyMarkup": "none",
+                  "additionalFields": {}
+                },
+                "type": "n8n-nodes-base.telegram",
+                "typeVersion": 1.2,
+                "position": [
+                  1680,
+                  1136
+                ],
+                "id": "d3b2ffd1-8c1d-4295-85cc-bfac90b01296",
+                "name": "Send a photo message",
+                "webhookId": "39a67d57-ab3c-480b-9839-d8952b0df601",
+                "credentials": {
+                  "telegramApi": {
+                    "id": "YgDiVHNH76KDe1Au",
+                    "name": "Telegram account 2"
+                  }
+                }
+              },
+              "messages": [
+                "400 - {\"ok\":false,\"error_code\":400,\"description\":\"Bad Request: chat_id is empty\"}"
+              ],
+              "httpCode": "400",
+              "message": "Bad request - please check your parameters",
+              "stack": "NodeApiError: Bad request - please check your parameters\n    at ExecuteContext.apiRequest (/usr/local/lib/node_modules/n8n/node_modules/.pnpm/n8n-nodes-base@file+packages+nodes-base_@aws-sdk+credential-providers@3.808.0_asn1.js@5_8da18263ca0574b0db58d4fefd8173ce/node_modules/n8n-nodes-base/nodes/Telegram/GenericFunctions.ts:230:9)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at ExecuteContext.execute (/usr/local/lib/node_modules/n8n/node_modules/.pnpm/n8n-nodes-base@file+packages+nodes-base_@aws-sdk+credential-providers@3.808.0_asn1.js@5_8da18263ca0574b0db58d4fefd8173ce/node_modules/n8n-nodes-base/nodes/Telegram/Telegram.node.ts:2194:21)\n    at WorkflowExecute.executeNode (/usr/local/lib/node_modules/n8n/node_modules/.pnpm/n8n-core@file+packages+core_@opentelemetry+api@1.9.0_@opentelemetry+sdk-trace-base@1.30_ec37920eb95917b28efaa783206b20f3/node_modules/n8n-core/src/execution-engine/workflow-execute.ts:1045:8)\n    at WorkflowExecute.runNode (/usr/local/lib/node_modules/n8n/node_modules/.pnpm/n8n-core@file+packages+core_@opentelemetry+api@1.9.0_@opentelemetry+sdk-trace-base@1.30_ec37920eb95917b28efaa783206b20f3/node_modules/n8n-core/src/execution-engine/workflow-execute.ts:1226:11)\n    at /usr/local/lib/node_modules/n8n/node_modules/.pnpm/n8n-core@file+packages+core_@opentelemetry+api@1.9.0_@opentelemetry+sdk-trace-base@1.30_ec37920eb95917b28efaa783206b20f3/node_modules/n8n-core/src/execution-engine/workflow-execute.ts:1662:27\n    at /usr/local/lib/node_modules/n8n/node_modules/.pnpm/n8n-core@file+packages+core_@opentelemetry+api@1.9.0_@opentelemetry+sdk-trace-base@1.30_ec37920eb95917b28efaa783206b20f3/node_modules/n8n-core/src/execution-engine/workflow-execute.ts:2297:11"
+            },
+            "lastNodeExecuted": "Send a photo message",
+            "mode": "webhook",
+            "executionContext": {
+              "version": 1,
+              "establishedAt": 1768744303500,
+              "source": "webhook",
+              "triggerNode": {
+                "name": "Telegram Trigger",
+                "type": "n8n-nodes-base.telegramTrigger"
+              }
+            }
+          },
+          "workflow": {
+            "id": "1tNfThN1MtgDiHr85lLqi",
+            "name": "The Recap AI - eCommerce Photo Shoot Automation"
+          }
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Lead Qualification Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "Lead Qualification Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create an event in Google Calendar": {
+      "ai_tool": [
+        [
+          {
+            "node": "Lead Qualification Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet in Google Sheets": {
+      "ai_tool": [
+        [
+          {
+            "node": "Lead Qualification Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Lead Qualification Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message in Slack": {
+      "ai_tool": [
+        [
+          {
+            "node": "Lead Qualification Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lead Qualification Agent": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message in Gmail": {
+      "ai_tool": [
+        [
+          {
+            "node": "Lead Qualification Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Error Trigger": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false,
+    "timeSavedMode": "fixed",
+    "errorWorkflow": "sfKmbfgp7u1iNlrx",
+    "callerPolicy": "workflowsFromSameOwner",
+    "executionTimeout": -1
+  },
+  "versionId": "8eaac6aa-8512-4354-9c36-80fe9072f068",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "09c6f3ca58f76b3e1be56206e511d343b4b437e675f00115dda338d4a30ee021"
+  },
+  "id": "sfKmbfgp7u1iNlrx",
+  "tags": []
+}

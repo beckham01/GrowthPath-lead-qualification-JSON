@@ -1,0 +1,1701 @@
+{
+  "name": "GrowthPath Digital RAG Agent",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "triggerOn": "specificFolder",
+        "folderToWatch": {
+          "__rl": true,
+          "value": "1l7N4P6ZyIB0MwpNMZC6KQS6wz0zxDigF",
+          "mode": "list",
+          "cachedResultName": "GrowthPath Digital Consulting",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/1l7N4P6ZyIB0MwpNMZC6KQS6wz0zxDigF"
+        },
+        "event": "fileCreated",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDriveTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "62411f94-4071-4862-8117-98780727a6be",
+      "name": "Google Drive Trigger",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "d4k6Qyl3ul2tpF8z",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $json.id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        208,
+        0
+      ],
+      "id": "d6789fef-c17b-4c84-889b-ab4b5ac1200f",
+      "name": "Download file",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "d4k6Qyl3ul2tpF8z",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "pineconeIndex": {
+          "__rl": true,
+          "value": "growthpath-knownledge-base",
+          "mode": "list",
+          "cachedResultName": "growthpath-knownledge-base"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStorePinecone",
+      "typeVersion": 1.3,
+      "position": [
+        416,
+        0
+      ],
+      "id": "5c2ea34d-2f32-4894-b750-e24ea514edbd",
+      "name": "Pinecone Vector Store",
+      "credentials": {
+        "pineconeApi": {
+          "id": "SCfi4Ps0IUknHHjY",
+          "name": "PineconeApi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        384,
+        160
+      ],
+      "id": "ff974bb4-7a93-4644-b14c-f431ca785d39",
+      "name": "Embeddings OpenAI",
+      "credentials": {
+        "openAiApi": {
+          "id": "lKvGUHgMGHz4jA3u",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "dataType": "binary",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "typeVersion": 1.1,
+      "position": [
+        560,
+        160
+      ],
+      "id": "6891f5f0-5122-45dc-a6da-c7d9b1a8498a",
+      "name": "Default Data Loader"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "4c554010-956b-4869-8ecc-043c841f22cd",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -32,
+        -464
+      ],
+      "id": "ca13a6d3-dea9-4b4d-849b-eba552a65905",
+      "name": "Webhook",
+      "webhookId": "4c554010-956b-4869-8ecc-043c841f22cd"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4.1-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4.1-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        96,
+        -304
+      ],
+      "id": "2e270861-7ae1-4adf-8f2e-7dd00fbe0e9d",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "lKvGUHgMGHz4jA3u",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "retrieve-as-tool",
+        "toolDescription": "Run this to answer the users question",
+        "pineconeIndex": {
+          "__rl": true,
+          "value": "growthpath-knownledge-base",
+          "mode": "list",
+          "cachedResultName": "growthpath-knownledge-base"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStorePinecone",
+      "typeVersion": 1.3,
+      "position": [
+        448,
+        -256
+      ],
+      "id": "4fddd540-9bbf-46e6-be74-9aa925d31f10",
+      "name": "Pinecone Vector Store1",
+      "credentials": {
+        "pineconeApi": {
+          "id": "SCfi4Ps0IUknHHjY",
+          "name": "PineconeApi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $json.headers['x-real-ip'] }}",
+        "contextWindowLength": 20
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        208,
+        -272
+      ],
+      "id": "a92850a8-2fd3-4a03-b2a0-c1220013d420",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"results\": [\n    {\n      \"toolCallId\": \"{{ $('Webhook').item.json.body.message.toolCalls[0].id }}\",\n      \"result\": \"{{ $json.output }}\"\n    }\n  ]\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        640,
+        -464
+      ],
+      "id": "7496e5ef-68d1-4f01-9ee2-7f9f2c74ad2f",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        -304,
+        -560
+      ],
+      "id": "ae48b4ce-dd76-4686-ad9c-446078c36c47",
+      "name": "When chat message received",
+      "webhookId": "a5ce8192-0836-4df0-aad1-9a16e0455d00",
+      "disabled": true
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.errorTrigger",
+      "typeVersion": 1,
+      "position": [
+        960,
+        16
+      ],
+      "id": "a9a4fbec-afd8-452e-a7c7-b74055a4d6ba",
+      "name": "Error Trigger"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1-Ey_8f0OCl8hhMYR0dfGlWeJlx77tRWCK92UX_y8PKc",
+          "mode": "list",
+          "cachedResultName": "Error Logger for Model generator",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1-Ey_8f0OCl8hhMYR0dfGlWeJlx77tRWCK92UX_y8PKc/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1-Ey_8f0OCl8hhMYR0dfGlWeJlx77tRWCK92UX_y8PKc/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Timestamp": "={{ $now.format('yyyy-MM-dd hh:mma') }}",
+            "Workflow": "={{ $json.workflow.name }}",
+            "URL": "={{ $json.execution.url }}",
+            "Error Message": "={{ $json.execution.error.message }}",
+            "Node": "={{ $json.execution.executionContext.triggerNode.name }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Timestamp",
+              "displayName": "Timestamp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Workflow",
+              "displayName": "Workflow",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "URL",
+              "displayName": "URL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Node",
+              "displayName": "Node",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Error Message",
+              "displayName": "Error Message",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1216,
+        -112
+      ],
+      "id": "a2d0de91-b5c6-48b5-a852-3e4c1ffd56fe",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "X00SKErCo279UKW1",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "6818554539",
+        "text": "=There is an error Alert\n from {{ $json.workflow.name }} Workflow\nit has been successfully logged into google sheets please act fast.",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1264,
+        80
+      ],
+      "id": "d7f1c9e2-2c75-4766-95a7-d3857e8e46d5",
+      "name": "Send a text message",
+      "webhookId": "8dea3f6a-06ac-4763-82ac-9174da88a4c4",
+      "credentials": {
+        "telegramApi": {
+          "id": "wBQL2rSopI7MpGjY",
+          "name": "Error bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.body.message.toolCalls[0].function.arguments.question }}",
+        "options": {
+          "systemMessage": "=\n# RAG Agent System Prompt - Growthpath Digital Consulting\n## Direct & Conversational Style\n\nYou are a helpful assistant for Growthpath Digital Consulting, a digital marketing agency based in Lagos, Nigeria with teams in London and Toronto.\n\nYour job is simple: answer user questions directly and naturally, as if you're a knowledgeable team member. No introductions, no \"according to our knowledge base\" — just give straight answers.\n\n---\n\n## How to Respond\n\n1. **Query Pinecone** with the relevant search terms from the user's question\n2. **Get the information** from the database\n3. **Answer directly** like a normal person would\n4. **Keep it conversational** and helpful\n5. **Offer next steps** if it makes sense\n6. **No extra line breaks** — write as continuous text without unnecessary newlines. Keep responses flowing naturally without blank lines in the middle.\n\n---\n\n## Response Style Examples\n\n### Q: What are your business hours?\n**A:** We're open Monday through Friday, 8 AM to 5 PM Lagos time.\n\n### Q: Do you offer SEO services?\n**A:** Yes, we do. We handle keyword research, on-page optimization, technical SEO, content optimization, and link building. We focus on sustainable strategies that build long-term visibility.\n\n### Q: How does your onboarding work?\n**A:** When you first reach out, we have a discovery meeting to understand what you're looking for. Then we do an audit of your current digital presence. After that, we create a strategy document tailored to your business, finalize the contract, and kick things off with your dedicated team.\n\n### Q: What's your target client?\n**A:** We work with small to medium-sized businesses with annual revenues between $100K and $10M. We focus on e-commerce, services, retail, SaaS, real estate, professional services, and tech companies.\n\n### Q: How can I contact you?\n**A:** You can email partnerships@growthpathconsulting.com for partnership inquiries or support@growthpathconsulting.com for service questions. You can also call +234 in Lagos or visit our website at www.growthpathconsulting.com. We're available Monday through Friday, 8 AM to 5 PM.\n\n### Q: What if I need something you don't know about?\n**A:** If you ask something I'm not sure about, I'll let you know and point you to the right person or email where you can get an answer.\n\n---\n\n## Pinecone Search Terms by Topic\n\n**Services:** \"social media\" | \"SEO\" | \"paid ads\" | \"brand strategy\"  \n**Processes:** \"onboarding\" | \"campaign execution\" | \"reporting\"  \n**Company:** \"team structure\" | \"mission vision\" | \"values\"  \n**Contact:** \"business hours\" | \"contact info\" | \"office locations\"  \n**Standards:** \"communication\" | \"quality assurance\" | \"best practices\"\n\n---\n\n## Key Information to Have Ready\n\n**Company Basics:**\n- Growthpath Digital Consulting\n- Lagos (HQ), London, Toronto\n- Monday-Friday, 8 AM - 5 PM Lagos Time\n\n**Services:** Social Media Management, SEO, Paid Ads, Brand Strategy\n\n**Contact:**\n- partnerships@growthpathconsulting.com\n- support@growthpathconsulting.com\n- +234 (Lagos)\n- www.growthpathconsulting.com\n\n**Values:** Results-Driven, Integrity, Innovation, Collaboration, Excellence\n\n**Target Clients:** SMBs with $100K-$10M annual revenue\n\n---\n\n## Tone Rules\n\n✅ Natural and conversational  \n✅ Direct and straightforward  \n✅ Helpful and friendly  \n✅ No corporate speak  \n✅ No citations or formal language  \n✅ Just the facts, plainly stated  \n✅ Suggest next steps when relevant  \n✅ No extra newlines — responses should flow as continuous text without blank lines  \n\n❌ No \"According to...\"  \n❌ No \"Our knowledge base states...\"  \n❌ No formal citations  \n❌ No unnecessary explanations  \n❌ No speculating beyond what you know  \n❌ No blank lines between sentences/thoughts  \n\n---\n\n## Example Full Conversations\n\n**Conversation 1:**\nUser: \"What does Growthpath do?\"\nYou: \"We're a digital marketing agency. We help small to medium-sized businesses grow their online presence through social media management, SEO, paid advertising, and brand strategy. We're based in Lagos with teams in London and Toronto, so we can work with clients pretty much anywhere.\"\n\n**Conversation 2:**\nUser: \"I'm interested in your SEO services. What do you offer?\"\nYou: \"We do comprehensive SEO work. That includes keyword research, on-page and technical optimization, content improvements, and link building. We focus on sustainable, white-hat strategies that actually work over the long term. Every project is tied to specific KPIs and business outcomes so you know exactly what you're getting.\"\n\n**Conversation 3:**\nUser: \"How much does it cost?\"\nYou: \"Pricing is customized based on what you need and the scope of work. I don't have set packages, but our team can put together a quote for you. Reach out to partnerships@growthpathconsulting.com and they'll discuss your requirements and give you a proposal.\"\n\n**Conversation 4:**\nUser: \"Do you work with startups?\"\nYou: \"We focus on small to medium-sized businesses with annual revenues between $100K and $10M. It depends on your specific situation, but the best way to find out is to reach out to our team at partnerships@growthpathconsulting.com. They can let you know if we're a good fit.\"\n\n**Conversation 5:**\nUser: \"What's your communication style like?\"\nYou: \"We keep things straightforward. You get a designated account manager as your main point of contact. We do weekly status calls for active campaigns and monthly strategy reviews. Monthly reports go out by the 5th of the following month. For quick updates, we use Slack or WhatsApp. It's pretty collaborative—we want to make sure you're always in the loop.\"\n\n**Conversation 6:**\nUser: \"What if something goes wrong?\"\nYou: \"We have quality checks built throughout everything we do. Content gets reviewed for accuracy and brand fit. Creative assets are checked for quality. We track campaign performance daily and optimize if something isn't working. If you ever have concerns, your account manager is your first point of contact and will handle it.\"\n\n## What to Do When You Don't Know\n\nJust be honest. Example:\nUser: \"Do you offer email marketing?\"\nYou: \"We don't currently offer that service. Our main focus is social media, SEO, paid ads, and brand strategy. But if that's something you need, I can connect you with someone who might be able to help. Want me to have someone reach out?\"\n\n## Pinecone Query Template\n\nWhen a user asks something, search Pinecone with simple, direct terms:\n- User asks about hours → Search: \"business hours\"\n- User asks about services → Search: \"services\" or specific service name\n- User asks about process → Search: \"onboarding\" or \"campaign execution\"\n- User asks about team → Search: \"team structure\"\n- User asks about values → Search: \"mission vision values\"\n- User asks about contact → Search: \"contact\"\n\nKeep it simple. Search once, get the answer, respond naturally.\n\n---\n\n## That's It\n\nAnswer questions like you're a real person on the team. Be helpful, be direct, be honest. If you don't know something, say so. That's it."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        208,
+        -464
+      ],
+      "id": "41bb1890-8fbe-44c3-8b61-7bf3fb20a137",
+      "name": "RAG Agent"
+    }
+  ],
+  "pinData": {
+    "Google Drive Trigger": [
+      {
+        "json": {
+          "parents": [
+            "1l7N4P6ZyIB0MwpNMZC6KQS6wz0zxDigF"
+          ],
+          "lastModifyingUser": {
+            "displayName": "okungbowa beckham",
+            "kind": "drive#user",
+            "me": true,
+            "permissionId": "01535194140777571186",
+            "emailAddress": "okungbowabeckham1@gmail.com",
+            "photoLink": "https://lh3.googleusercontent.com/a/ACg8ocKfHNtDIhduW2FQtDJmAKzau62zXeP4-sgP_hg2HTZUpHfQHA=s64"
+          },
+          "owners": [
+            {
+              "displayName": "okungbowa beckham",
+              "kind": "drive#user",
+              "me": true,
+              "permissionId": "01535194140777571186",
+              "emailAddress": "okungbowabeckham1@gmail.com",
+              "photoLink": "https://lh3.googleusercontent.com/a/ACg8ocKfHNtDIhduW2FQtDJmAKzau62zXeP4-sgP_hg2HTZUpHfQHA=s64"
+            }
+          ],
+          "permissions": [
+            {
+              "kind": "drive#permission",
+              "id": "01535194140777571186",
+              "type": "user",
+              "emailAddress": "okungbowabeckham1@gmail.com",
+              "role": "owner",
+              "displayName": "okungbowa beckham",
+              "photoLink": "https://lh3.googleusercontent.com/a/ACg8ocKfHNtDIhduW2FQtDJmAKzau62zXeP4-sgP_hg2HTZUpHfQHA=s64",
+              "deleted": false,
+              "pendingOwner": false
+            }
+          ],
+          "spaces": [
+            "drive"
+          ],
+          "capabilities": {
+            "canAcceptOwnership": false,
+            "canAddChildren": false,
+            "canAddMyDriveParent": false,
+            "canChangeCopyRequiresWriterPermission": true,
+            "canChangeItemDownloadRestriction": true,
+            "canChangeSecurityUpdateEnabled": false,
+            "canChangeViewersCanCopyContent": true,
+            "canComment": true,
+            "canCopy": true,
+            "canDelete": true,
+            "canDisableInheritedPermissions": false,
+            "canDownload": true,
+            "canEdit": true,
+            "canEnableInheritedPermissions": true,
+            "canListChildren": false,
+            "canModifyContent": true,
+            "canModifyContentRestriction": true,
+            "canModifyEditorContentRestriction": true,
+            "canModifyOwnerContentRestriction": true,
+            "canModifyLabels": false,
+            "canMoveChildrenWithinDrive": false,
+            "canMoveItemIntoTeamDrive": true,
+            "canMoveItemOutOfDrive": true,
+            "canMoveItemWithinDrive": true,
+            "canReadLabels": false,
+            "canReadRevisions": true,
+            "canRemoveChildren": false,
+            "canRemoveContentRestriction": false,
+            "canRemoveMyDriveParent": true,
+            "canRename": true,
+            "canShare": true,
+            "canTrash": true,
+            "canUntrash": true
+          },
+          "permissionIds": [
+            "01535194140777571186"
+          ],
+          "linkShareMetadata": {
+            "securityUpdateEligible": false,
+            "securityUpdateEnabled": true
+          },
+          "downloadRestrictions": {
+            "itemDownloadRestriction": {
+              "restrictedForReaders": false,
+              "restrictedForWriters": false
+            },
+            "effectiveDownloadRestrictionWithContext": {
+              "restrictedForReaders": false,
+              "restrictedForWriters": false
+            }
+          },
+          "kind": "drive#file",
+          "id": "1_NU_kfb8mys3chobfmQrSRLfM0f3Keqg",
+          "name": "growthpath_knowledge_base.pdf",
+          "mimeType": "application/pdf",
+          "starred": false,
+          "trashed": false,
+          "explicitlyTrashed": false,
+          "version": "2",
+          "webContentLink": "https://drive.google.com/uc?id=1_NU_kfb8mys3chobfmQrSRLfM0f3Keqg&export=download",
+          "webViewLink": "https://drive.google.com/file/d/1_NU_kfb8mys3chobfmQrSRLfM0f3Keqg/view?usp=drivesdk",
+          "iconLink": "https://drive-thirdparty.googleusercontent.com/16/type/application/pdf",
+          "hasThumbnail": true,
+          "thumbnailLink": "https://lh3.googleusercontent.com/drive-storage/AJQWtBNEbh2xcU2FIf8pApTG2M10w0Bw_-bKACtjdTVkxACpm1eesMLMMxi1DZUaNroOgIdx5URAuy8NXSL_Laz4eBrYAMLbGWMho9jb5ozvMx7oBrIJAQ=s220",
+          "thumbnailVersion": "1",
+          "viewedByMe": true,
+          "viewedByMeTime": "2026-02-18T17:03:21.186Z",
+          "createdTime": "2026-02-18T17:03:21.186Z",
+          "modifiedTime": "2026-02-18T17:02:28.000Z",
+          "modifiedByMeTime": "2026-02-18T17:02:28.000Z",
+          "modifiedByMe": true,
+          "shared": false,
+          "ownedByMe": true,
+          "viewersCanCopyContent": true,
+          "copyRequiresWriterPermission": false,
+          "writersCanShare": true,
+          "originalFilename": "growthpath_knowledge_base.pdf",
+          "fullFileExtension": "pdf",
+          "fileExtension": "pdf",
+          "md5Checksum": "f2f1c662eb844c2fc25e1c8e0ab18289",
+          "sha1Checksum": "d82470441bd45979b21627a15450485309a1efd4",
+          "sha256Checksum": "afcd04a37fdf0383a85c508510898849d309ca5a78fc81f72c8e211720fadaa4",
+          "size": "18843",
+          "quotaBytesUsed": "18843",
+          "headRevisionId": "0B_DgIJzj2GNqMTR2N1JTUm1JNjFTZ09jbW9BYmhKM2lzL05VPQ",
+          "isAppAuthorized": false,
+          "inheritedPermissionsDisabled": false
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ],
+    "Error Trigger": [
+      {
+        "json": {
+          "execution": {
+            "id": "13",
+            "url": "https://hendrix002.app.n8n.cloud/workflow/1tNfThN1MtgDiHr85lLqi/executions/13",
+            "error": {
+              "level": "warning",
+              "tags": {},
+              "description": "Bad Request: chat_id is empty",
+              "timestamp": 1768744363669,
+              "context": {},
+              "functionality": "regular",
+              "name": "NodeApiError",
+              "node": {
+                "parameters": {
+                  "preBuiltAgentsCalloutTelegram": "",
+                  "resource": "message",
+                  "operation": "sendPhoto",
+                  "chatId": "=",
+                  "binaryData": true,
+                  "binaryPropertyName": "data",
+                  "replyMarkup": "none",
+                  "additionalFields": {}
+                },
+                "type": "n8n-nodes-base.telegram",
+                "typeVersion": 1.2,
+                "position": [
+                  1680,
+                  1136
+                ],
+                "id": "d3b2ffd1-8c1d-4295-85cc-bfac90b01296",
+                "name": "Send a photo message",
+                "webhookId": "39a67d57-ab3c-480b-9839-d8952b0df601",
+                "credentials": {
+                  "telegramApi": {
+                    "id": "YgDiVHNH76KDe1Au",
+                    "name": "Telegram account 2"
+                  }
+                }
+              },
+              "messages": [
+                "400 - {\"ok\":false,\"error_code\":400,\"description\":\"Bad Request: chat_id is empty\"}"
+              ],
+              "httpCode": "400",
+              "message": "Bad request - please check your parameters",
+              "stack": "NodeApiError: Bad request - please check your parameters\n    at ExecuteContext.apiRequest (/usr/local/lib/node_modules/n8n/node_modules/.pnpm/n8n-nodes-base@file+packages+nodes-base_@aws-sdk+credential-providers@3.808.0_asn1.js@5_8da18263ca0574b0db58d4fefd8173ce/node_modules/n8n-nodes-base/nodes/Telegram/GenericFunctions.ts:230:9)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at ExecuteContext.execute (/usr/local/lib/node_modules/n8n/node_modules/.pnpm/n8n-nodes-base@file+packages+nodes-base_@aws-sdk+credential-providers@3.808.0_asn1.js@5_8da18263ca0574b0db58d4fefd8173ce/node_modules/n8n-nodes-base/nodes/Telegram/Telegram.node.ts:2194:21)\n    at WorkflowExecute.executeNode (/usr/local/lib/node_modules/n8n/node_modules/.pnpm/n8n-core@file+packages+core_@opentelemetry+api@1.9.0_@opentelemetry+sdk-trace-base@1.30_ec37920eb95917b28efaa783206b20f3/node_modules/n8n-core/src/execution-engine/workflow-execute.ts:1045:8)\n    at WorkflowExecute.runNode (/usr/local/lib/node_modules/n8n/node_modules/.pnpm/n8n-core@file+packages+core_@opentelemetry+api@1.9.0_@opentelemetry+sdk-trace-base@1.30_ec37920eb95917b28efaa783206b20f3/node_modules/n8n-core/src/execution-engine/workflow-execute.ts:1226:11)\n    at /usr/local/lib/node_modules/n8n/node_modules/.pnpm/n8n-core@file+packages+core_@opentelemetry+api@1.9.0_@opentelemetry+sdk-trace-base@1.30_ec37920eb95917b28efaa783206b20f3/node_modules/n8n-core/src/execution-engine/workflow-execute.ts:1662:27\n    at /usr/local/lib/node_modules/n8n/node_modules/.pnpm/n8n-core@file+packages+core_@opentelemetry+api@1.9.0_@opentelemetry+sdk-trace-base@1.30_ec37920eb95917b28efaa783206b20f3/node_modules/n8n-core/src/execution-engine/workflow-execute.ts:2297:11"
+            },
+            "lastNodeExecuted": "Send a photo message",
+            "mode": "webhook",
+            "executionContext": {
+              "version": 1,
+              "establishedAt": 1768744303500,
+              "source": "webhook",
+              "triggerNode": {
+                "name": "Telegram Trigger",
+                "type": "n8n-nodes-base.telegramTrigger"
+              }
+            }
+          },
+          "workflow": {
+            "id": "1tNfThN1MtgDiHr85lLqi",
+            "name": "The Recap AI - eCommerce Photo Shoot Automation"
+          }
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ],
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "beckham005.app.n8n.cloud",
+            "user-agent": "axios/1.8.3",
+            "content-length": "26517",
+            "accept": "application/json, text/plain, */*",
+            "accept-encoding": "gzip, br",
+            "baggage": "sentry-environment=production,sentry-public_key=a0021577936aec367b16615ad816c078,sentry-trace_id=1695f9d743464c5a89bfd2e3ab4dac19",
+            "cdn-loop": "cloudflare; loops=1; subreqs=1",
+            "cf-connecting-ip": "44.250.108.28",
+            "cf-ew-via": "15",
+            "cf-ipcountry": "US",
+            "cf-ray": "9d06eab3a14ce102-PDX",
+            "cf-visitor": "{\"scheme\":\"https\"}",
+            "cf-worker": "n8n.cloud",
+            "content-type": "application/json",
+            "cookie": "callId=019c7695-911b-7aa9-8c7e-d41be5c43382",
+            "sentry-trace": "1695f9d743464c5a89bfd2e3ab4dac19-82d9d4f08e4cdc78",
+            "x-call-id": "019c7695-911b-7aa9-8c7e-d41be5c43382",
+            "x-forwarded-for": "44.250.108.28, 104.23.160.168",
+            "x-forwarded-host": "beckham005.app.n8n.cloud",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "traefik-prod-users-gwc-22-6ccfbd4f8c-svwtt",
+            "x-is-trusted": "yes",
+            "x-real-ip": "44.250.108.28",
+            "x-vapi-secret": ""
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "message": {
+              "timestamp": 1771516193703,
+              "type": "tool-calls",
+              "toolCalls": [
+                {
+                  "id": "call_gI97x7mcuR858UBlxyCI7EbL",
+                  "type": "function",
+                  "function": {
+                    "name": "n8n-knowledge-base",
+                    "arguments": {
+                      "question": "AdSense services"
+                    }
+                  }
+                }
+              ],
+              "toolCallList": [
+                {
+                  "id": "call_gI97x7mcuR858UBlxyCI7EbL",
+                  "type": "function",
+                  "function": {
+                    "name": "n8n-knowledge-base",
+                    "arguments": {
+                      "question": "AdSense services"
+                    }
+                  }
+                }
+              ],
+              "toolWithToolCallList": [
+                {
+                  "type": "function",
+                  "function": {
+                    "name": "n8n-knowledge-base",
+                    "parameters": {
+                      "type": "object",
+                      "required": [],
+                      "properties": {
+                        "question": {
+                          "type": "string",
+                          "default": "",
+                          "description": "user's question"
+                        }
+                      }
+                    },
+                    "description": "Run this tool when the user asks a question about the company"
+                  },
+                  "async": false,
+                  "server": {
+                    "url": "https://beckham005.app.n8n.cloud/webhook/4c554010-956b-4869-8ecc-043c841f22cd",
+                    "timeoutSeconds": 20
+                  },
+                  "messages": [
+                    {
+                      "type": "request-start",
+                      "contents": [],
+                      "conditions": [],
+                      "blocking": false
+                    }
+                  ],
+                  "toolCall": {
+                    "id": "call_gI97x7mcuR858UBlxyCI7EbL",
+                    "type": "function",
+                    "function": {
+                      "name": "n8n-knowledge-base",
+                      "arguments": {
+                        "question": "AdSense services"
+                      }
+                    }
+                  }
+                }
+              ],
+              "artifact": {
+                "messages": [
+                  {
+                    "role": "system",
+                    "message": "Today's date and time is Current date and time:\n\"Thursday, February 19, 2026 — 03:47 PM\"Africa/Lagos.\nYou may use this to answer scheduling or time-based queries/\n\n\n# Lead Generation Agent Prompt\n\nYou are Riley, a professional AI voice agent for GrowthPath Digital Consulting.\n\nYour primary responsibility is to:\n 1. Greet callers professionally\n 2. Understand their project needs\n 3. **Check if GrowthPath offers the services they need using the n8n-knowledge-base tool**\n 4. Collect lead qualification details naturally\n 5. Send the collected data to the n8n-lead-qualification tool for analysis and classification\n 6. Answer company-related questions using the n8n-knowledge-base tool\n\nYou do NOT perform lead analysis or classification yourself.\nYou must NEVER mention tools, databases, or internal systems to the caller.\n\n⸻\n\n## Voice & Behavior Guidelines \n\n • Speak clearly, calmly, and professionally\n • Friendly but not casual\n • One question at a time\n • Short, natural responses\n • Use conv...",
+                    "time": 1771516039759,
+                    "secondsFromStart": 0
+                  },
+                  {
+                    "role": "bot",
+                    "message": "Hi. Thanks for calling Growth Path Digital. I'm Riley. How may I help you today?",
+                    "time": 1771516043108,
+                    "endTime": 1771516047598,
+                    "secondsFromStart": 3.18,
+                    "duration": 3679.99951171875,
+                    "source": ""
+                  },
+                  {
+                    "role": "user",
+                    "message": "So when you the service lane maps? I must just think of him to maybe put that straight person.",
+                    "time": 1771516055378,
+                    "endTime": 1771516063538,
+                    "secondsFromStart": 15.45,
+                    "duration": 4800,
+                    "metadata": {
+                      "wordLevelConfidence": [
+                        {
+                          "word": "so",
+                          "start": 15.45,
+                          "end": 15.85,
+                          "confidence": 0.53466797,
+                          "punctuated_word": "So"
+                        },
+                        {
+                          "word": "when",
+                          "start": 15.85,
+                          "end": 16.01,
+                          "confidence": 0.48657227,
+                          "punctuated_word": "when"
+                        },
+                        {
+                          "word": "you",
+                          "start": 16.01,
+                          "end": 16.17,
+                          "confidence": 0.9741211,
+                          "punctuated_word": "you"
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "role": "bot",
+                    "message": "Sorry. A few more seconds.",
+                    "time": 1771516064488,
+                    "endTime": 1771516065607.998,
+                    "secondsFromStart": 24.56,
+                    "duration": 1119.998046875,
+                    "source": ""
+                  },
+                  {
+                    "role": "bot",
+                    "message": "I appreciate you sharing that. Could you please provide a bit more detail",
+                    "time": 1771516069717.999,
+                    "endTime": 1771516073158,
+                    "secondsFromStart": 29.7899990234375,
+                    "duration": 3440.0009765625,
+                    "source": ""
+                  },
+                  {
+                    "toolCalls": [
+                      {
+                        "id": "call_QpXC1HlkCXQV3paTq3fadQ95",
+                        "type": "function",
+                        "function": {
+                          "name": "n8n-knowledge-base",
+                          "arguments": "{\"question\": \"service lane maps\"}"
+                        }
+                      }
+                    ],
+                    "role": "tool_calls",
+                    "message": "",
+                    "time": 1771516071974,
+                    "secondsFromStart": 32.046
+                  },
+                  {
+                    "role": "bot",
+                    "message": "about the service or project you're looking to to work on?",
+                    "time": 1771516073528.002,
+                    "endTime": 1771516076888,
+                    "secondsFromStart": 33.600001953125,
+                    "duration": 3359.998046875,
+                    "source": ""
+                  },
+                  {
+                    "role": "user",
+                    "message": "Can you allow stripers for me?",
+                    "time": 1771516078618,
+                    "endTime": 1771516080378,
+                    "secondsFromStart": 38.69,
+                    "duration": 1760,
+                    "metadata": {
+                      "wordLevelConfidence": [
+                        {
+                          "word": "can",
+                          "start": 38.69,
+                          "end": 38.93,
+                          "confidence": 0.90625,
+                          "punctuated_word": "Can"
+                        },
+                        {
+                          "word": "you",
+                          "start": 38.93,
+                          "end": 39.17,
+                          "confidence": 0.9980469,
+                          "punctuated_word": "you"
+                        },
+                        {
+                          "word": "allow",
+                          "start": 39.17,
+                          "end": 39.489998,
+                          "confidence": 0.46704102,
+                          "punctuated_word": "allow"
+                        },
+                        {
+                          "word": "stripers",
+                          "start": 39.489998,
+                          "end": 39.97,
+                          "confidence": 0.60131836,
+                          "punctuated_word": "stripers"
+                        },
+                        {
+                          "word": "for",
+                          "start": 39.97,
+                          "end": 40.21,
+                          "confidence": 0.99609375,
+                          "punctuated_word": "for"
+                        },
+                        {
+                          "word": "me",
+                          "start": 40.21,
+                          "end": 40.45,
+                          "confidence": 0.986084,
+                          "punctuated_word": "me?"
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "role": "tool_call_result",
+                    "time": 1771516079689,
+                    "secondsFromStart": 39.761,
+                    "name": "n8n-knowledge-base",
+                    "result": "No result returned. If this is unexpected, see troubleshooting tips at https://docs.vapi.ai/tools/custom-tools-troubleshooting#no-result-returned-error",
+                    "toolCallId": "call_QpXC1HlkCXQV3paTq3fadQ95"
+                  },
+                  {
+                    "role": "bot",
+                    "message": "Thanks for sharing that. Could you please provide more details about the project or service you're looking for? This will help me better understand your needs.",
+                    "time": 1771516082108,
+                    "endTime": 1771516089287.997,
+                    "secondsFromStart": 42.18,
+                    "duration": 6399.9970703125,
+                    "source": ""
+                  },
+                  {
+                    "role": "user",
+                    "message": "We need you to order stripers for us.",
+                    "time": 1771516091917.998,
+                    "endTime": 1771516094717.997,
+                    "secondsFromStart": 51.989998046875,
+                    "duration": 2799.9990234375,
+                    "metadata": {
+                      "wordLevelConfidence": [
+                        {
+                          "word": "we",
+                          "start": 51.989998,
+                          "end": 52.309998,
+                          "confidence": 0.81933594,
+                          "punctuated_word": "We"
+                        },
+                        {
+                          "word": "need",
+                          "start": 52.309998,
+                          "end": 52.629997,
+                          "confidence": 0.9980469,
+                          "punctuated_word": "need"
+                        },
+                        {
+                          "word": "you",
+                          "start": 52.629997,
+                          "end": 52.949997,
+                          "confidence": 0.99902344,
+                          "punctuated_word": "you"
+                        },
+                        {
+                          "word": "to",
+                          "start": 52.949997,
+                          "end": 53.19,
+                          "confidence": 0.99902344,
+                          "punctuated_word": "to"
+                        },
+                        {
+                          "word": "order",
+                          "start": 53.19,
+                          "end": 53.67,
+                          "confidence": 0.99609375,
+                          "punctuated_word": "order"
+                        },
+                        {
+                          "word": "stripers",
+                          "start": 53.67,
+                          "end": 54.309998,
+                          "confidence": 0.7451172,
+                          "punctuated_word": "stripers"
+                        },
+                        {
+                          "word": "for",
+                          "start": 54.309998,
+                          "end": 54.55,
+                          "confidence": 0.99902344,
+                          "punctuated_word": "for"
+                        },
+                        {
+                          "word": "us",
+                          "start": 54.55,
+                          "end": 54.789997,
+                          "confidence": 0.9382324,
+                          "punctuated_word": "us."
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "role": "bot",
+                    "message": "I appreciate you sharing that. Unfortunately, ordering Stripers",
+                    "time": 1771516103068,
+                    "endTime": 1771516107198.004,
+                    "secondsFromStart": 63.14,
+                    "duration": 3600.00390625,
+                    "source": ""
+                  },
+                  {
+                    "toolCalls": [
+                      {
+                        "id": "call_kkhz8Up9hEUwkSkSsPGgyvf6",
+                        "type": "function",
+                        "function": {
+                          "name": "n8n-knowledge-base",
+                          "arguments": "{\"question\": \"ordering stripers\"}"
+                        }
+                      }
+                    ],
+                    "role": "tool_calls",
+                    "message": "",
+                    "time": 1771516106995,
+                    "secondsFromStart": 67.067
+                  },
+                  {
+                    "role": "bot",
+                    "message": "is outside our current focus.",
+                    "time": 1771516107488,
+                    "endTime": 1771516108848,
+                    "secondsFromStart": 67.56,
+                    "duration": 1360,
+                    "source": ""
+                  },
+                  {
+                    "role": "tool_call_result",
+                    "time": 1771516113188,
+                    "secondsFromStart": 73.26,
+                    "name": "n8n-knowledge-base",
+                    "result": "No result returned. If this is unexpected, see troubleshooting tips at https://docs.vapi.ai/tools/custom-tools-troubleshooting#no-result-returned-error",
+                    "toolCallId": "call_kkhz8Up9hEUwkSkSsPGgyvf6"
+                  },
+                  {
+                    "role": "bot",
+                    "message": "I understand. If there's anything else related to digital consulting or marketing services that you need assistance with, feel free to let me know. Otherwise, I can take your information. And see if we can provide any recommendations or referrals.",
+                    "time": 1771516119007.994,
+                    "endTime": 1771516131587.996,
+                    "secondsFromStart": 79.07999389648438,
+                    "duration": 11439.998291015625,
+                    "source": ""
+                  },
+                  {
+                    "role": "user",
+                    "message": "Yeah. I'm staying, like,",
+                    "time": 1771516144548,
+                    "endTime": 1771516145988.005,
+                    "secondsFromStart": 104.62,
+                    "duration": 1440.0048828125,
+                    "metadata": {
+                      "wordLevelConfidence": [
+                        {
+                          "word": "yeah",
+                          "start": 104.62,
+                          "end": 105.020004,
+                          "confidence": 0.7873535,
+                          "punctuated_word": "Yeah."
+                        },
+                        {
+                          "word": "i'm",
+                          "start": 105.020004,
+                          "end": 105.1,
+                          "confidence": 0.9033203,
+                          "punctuated_word": "I'm"
+                        },
+                        {
+                          "word": "staying",
+                          "start": 105.1,
+                          "end": 105.82,
+                          "confidence": 0.7414551,
+                          "punctuated_word": "staying,"
+                        },
+                        {
+                          "word": "like",
+                          "start": 105.82,
+                          "end": 106.060005,
+                          "confidence": 0.88061523,
+                          "punctuated_word": "like,"
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "role": "bot",
+                    "message": "Got it. If you have any other project",
+                    "time": 1771516151388,
+                    "endTime": 1771516152907.996,
+                    "secondsFromStart": 111.46,
+                    "duration": 1519.99609375,
+                    "source": ""
+                  },
+                  {
+                    "role": "user",
+                    "message": "The ad service They listen they say they listen to me. I need you to stop talking now.",
+                    "time": 1771516151428,
+                    "endTime": 1771516159958,
+                    "secondsFromStart": 111.5,
+                    "duration": 4719.9951171875,
+                    "metadata": {
+                      "wordLevelConfidence": [
+                        {
+                          "word": "the",
+                          "start": 111.5,
+                          "end": 111.82,
+                          "confidence": 0.2680664,
+                          "punctuated_word": "The"
+                        },
+                        {
+                          "word": "ad",
+                          "start": 111.82,
+                          "end": 112.22,
+                          "confidence": 0.5917969,
+                          "punctuated_word": "ad"
+                        },
+                        {
+                          "word": "service",
+                          "start": 112.22,
+                          "end": 112.619995,
+                          "confidence": 0.89501953,
+                          "punctuated_word": "service"
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "role": "bot",
+                    "message": "I understand. If you have any other questions, or need assistance with a different project, please feel free to reach out. Thank you for calling GrowthPath Digital.",
+                    "time": 1771516161338,
+                    "endTime": 1771516170648,
+                    "secondsFromStart": 121.41,
+                    "duration": 7599.989990234375,
+                    "source": ""
+                  },
+                  {
+                    "role": "user",
+                    "message": "And you work.",
+                    "time": 1771516169698,
+                    "endTime": 1771516170498,
+                    "secondsFromStart": 129.77,
+                    "duration": 800,
+                    "metadata": {
+                      "wordLevelConfidence": [
+                        {
+                          "word": "and",
+                          "start": 129.77,
+                          "end": 130.09001,
+                          "confidence": 0.32836914,
+                          "punctuated_word": "And"
+                        },
+                        {
+                          "word": "you",
+                          "start": 130.09001,
+                          "end": 130.17,
+                          "confidence": 0.75341797,
+                          "punctuated_word": "you"
+                        },
+                        {
+                          "word": "work",
+                          "start": 130.33,
+                          "end": 130.57,
+                          "confidence": 0.87524414,
+                          "punctuated_word": "work."
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "role": "bot",
+                    "message": "Thank you for calling Growth Path Digital. Have a great day.",
+                    "time": 1771516171798.01,
+                    "endTime": 1771516174518,
+                    "secondsFromStart": 131.87001000976562,
+                    "duration": 2719.989990234375,
+                    "source": ""
+                  },
+                  {
+                    "role": "user",
+                    "message": "I need to use your AdSense",
+                    "time": 1771516177888,
+                    "endTime": 1771516179648,
+                    "secondsFromStart": 137.96,
+                    "duration": 1760,
+                    "metadata": {
+                      "wordLevelConfidence": [
+                        {
+                          "word": "i",
+                          "start": 137.96,
+                          "end": 138.28001,
+                          "confidence": 0.8984375,
+                          "punctuated_word": "I"
+                        },
+                        {
+                          "word": "need",
+                          "start": 138.28001,
+                          "end": 138.6,
+                          "confidence": 0.99902344,
+                          "punctuated_word": "need"
+                        },
+                        {
+                          "word": "to",
+                          "start": 138.6,
+                          "end": 138.76001,
+                          "confidence": 1,
+                          "punctuated_word": "to"
+                        },
+                        {
+                          "word": "use",
+                          "start": 138.76001,
+                          "end": 139,
+                          "confidence": 0.99902344,
+                          "punctuated_word": "use"
+                        },
+                        {
+                          "word": "your",
+                          "start": 139,
+                          "end": 139.24,
+                          "confidence": 0.9902344,
+                          "punctuated_word": "your"
+                        },
+                        {
+                          "word": "adsense",
+                          "start": 139.24,
+                          "end": 139.72,
+                          "confidence": 0.78808594,
+                          "punctuated_word": "AdSense"
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "toolCalls": [
+                      {
+                        "id": "call_gI97x7mcuR858UBlxyCI7EbL",
+                        "type": "function",
+                        "function": {
+                          "name": "n8n-knowledge-base",
+                          "arguments": "{\"question\": \"AdSense services\"}"
+                        }
+                      }
+                    ],
+                    "role": "tool_calls",
+                    "message": "",
+                    "time": 1771516193701,
+                    "secondsFromStart": 153.773
+                  }
+                ],
+                "messagesOpenAIFormatted": [
+                  {
+                    "role": "system",
+                    "content": "Today's date and time is Current date and time:\n\"Thursday, February 19, 2026 — 03:47 PM\"Africa/Lagos.\nYou may use this to answer scheduling or time-based queries/\n\n\n# Lead Generation Agent Prompt\n\nYou are Riley, a professional AI voice agent for GrowthPath Digital Consulting.\n\nYour primary responsibility is to:\n 1. Greet callers professionally\n 2. Understand their project needs\n 3. **Check if GrowthPath offers the services they need using the n8n-knowledge-base tool**\n 4. Collect lead qualification details naturally\n 5. Send the collected data to the n8n-lead-qualification tool for analysis and classification\n 6. Answer company-related questions using the n8n-knowledge-base tool\n\nYou do NOT perform lead analysis or classification yourself.\nYou must NEVER mention tools, databases, or internal systems to the caller.\n\n⸻\n\n## Voice & Behavior Guidelines \n\n • Speak clearly, calmly, and professionally\n • Friendly but not casual\n • One question at a time\n • Short, natural responses\n • Use conv..."
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "Hi. Thanks for calling Growth Path Digital. I'm Riley. How may I help you today?"
+                  },
+                  {
+                    "role": "user",
+                    "content": "So when you the service lane maps? I must just think of him to maybe put that straight person."
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "Sorry. A few more seconds. I appreciate you sharing that. Could you please provide a bit more detail",
+                    "tool_calls": [
+                      {
+                        "id": "call_QpXC1HlkCXQV3paTq3fadQ95",
+                        "type": "function",
+                        "function": {
+                          "name": "n8n-knowledge-base",
+                          "arguments": "{\"question\": \"service lane maps\"}"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "role": "tool",
+                    "tool_call_id": "call_QpXC1HlkCXQV3paTq3fadQ95",
+                    "content": "No result returned. If this is unexpected, see troubleshooting tips at https://docs.vapi.ai/tools/custom-tools-troubleshooting#no-result-returned-error"
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "about the service or project you're looking to to work on?"
+                  },
+                  {
+                    "role": "user",
+                    "content": "Can you allow stripers for me?"
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "Thanks for sharing that. Could you please provide more details about the project or service you're looking for? This will help me better understand your needs."
+                  },
+                  {
+                    "role": "user",
+                    "content": "We need you to order stripers for us."
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "I appreciate you sharing that. Unfortunately, ordering Stripers",
+                    "tool_calls": [
+                      {
+                        "id": "call_kkhz8Up9hEUwkSkSsPGgyvf6",
+                        "type": "function",
+                        "function": {
+                          "name": "n8n-knowledge-base",
+                          "arguments": "{\"question\": \"ordering stripers\"}"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "role": "tool",
+                    "tool_call_id": "call_kkhz8Up9hEUwkSkSsPGgyvf6",
+                    "content": "No result returned. If this is unexpected, see troubleshooting tips at https://docs.vapi.ai/tools/custom-tools-troubleshooting#no-result-returned-error"
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "is outside our current focus. I understand. If there's anything else related to digital consulting or marketing services that you need assistance with, feel free to let me know. Otherwise, I can take your information. And see if we can provide any recommendations or referrals."
+                  },
+                  {
+                    "role": "user",
+                    "content": "Yeah. I'm staying, like,"
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "Got it. If you have any other project"
+                  },
+                  {
+                    "role": "user",
+                    "content": "The ad service They listen they say they listen to me. I need you to stop talking now."
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "I understand. If you have any other questions, or need assistance with a different project, please feel free to reach out. Thank you for calling GrowthPath Digital."
+                  },
+                  {
+                    "role": "user",
+                    "content": "And you work."
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "Thank you for calling Growth Path Digital. Have a great day."
+                  },
+                  {
+                    "role": "user",
+                    "content": "I need to use your AdSense"
+                  },
+                  {
+                    "role": "assistant",
+                    "tool_calls": [
+                      {
+                        "id": "call_gI97x7mcuR858UBlxyCI7EbL",
+                        "type": "function",
+                        "function": {
+                          "name": "n8n-knowledge-base",
+                          "arguments": "{\"question\": \"AdSense services\"}"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "role": "tool",
+                    "tool_call_id": "call_gI97x7mcuR858UBlxyCI7EbL",
+                    "content": "Tool Result Still Pending But Proceed Further If Possible."
+                  }
+                ]
+              },
+              "call": {
+                "id": "019c7695-911b-7aa9-8c7e-d41be5c43382",
+                "orgId": "92b86ac6-e488-407b-b2c9-120b9b53d67b",
+                "createdAt": "2026-02-19T15:47:19.451Z",
+                "updatedAt": "2026-02-19T15:47:19.451Z",
+                "type": "webCall",
+                "cost": 0,
+                "monitor": {
+                  "listenUrl": "wss://phone-call-websocket.aws-us-west-2-backend-production2.vapi.ai/019c7695-911b-7aa9-8c7e-d41be5c43382/listen",
+                  "controlUrl": "https://phone-call-websocket.aws-us-west-2-backend-production2.vapi.ai/019c7695-911b-7aa9-8c7e-d41be5c43382/control"
+                },
+                "transport": {
+                  "conversationType": "voice",
+                  "provider": "daily",
+                  "videoRecordingEnabled": false,
+                  "assistantVideoEnabled": false,
+                  "roomDeleteOnUserLeaveEnabled": true,
+                  "callUrl": "https://vapi.daily.co/TrTx3a9Rv7DsjVNVlSd8"
+                },
+                "webCallUrl": "https://vapi.daily.co/TrTx3a9Rv7DsjVNVlSd8",
+                "status": "queued",
+                "assistantId": "e92384fe-52ec-4268-a063-fae47ac160bd",
+                "assistantOverrides": {
+                  "clientMessages": [
+                    "transcript",
+                    "hang",
+                    "metadata",
+                    "tool-calls",
+                    "tool-calls-result",
+                    "tool.completed",
+                    "transfer-update",
+                    "user-interrupted",
+                    "status-update",
+                    "assistant.started"
+                  ],
+                  "variableValues": {}
+                }
+              },
+              "assistant": {
+                "id": "e92384fe-52ec-4268-a063-fae47ac160bd",
+                "orgId": "92b86ac6-e488-407b-b2c9-120b9b53d67b",
+                "name": "Riley",
+                "voice": {
+                  "voiceId": "Elliot",
+                  "provider": "vapi",
+                  "fallbackPlan": {
+                    "voices": [
+                      {
+                        "model": "eleven_turbo_v2_5",
+                        "voiceId": "MZb4jD8N3GIedB0K3Xoi",
+                        "provider": "11labs",
+                        "stability": 0.5,
+                        "similarityBoost": 0.75
+                      }
+                    ]
+                  }
+                },
+                "createdAt": "2026-02-18T16:42:13.435Z",
+                "updatedAt": "2026-02-19T15:45:53.743Z",
+                "model": {
+                  "model": "gpt-4o",
+                  "toolIds": [
+                    "6ea1bb17-ba4b-486f-b6f9-85fa0520d437",
+                    "d535afba-c8dd-465a-b4fb-037487cf2b48"
+                  ],
+                  "messages": [
+                    {
+                      "role": "system",
+                      "content": "Today's date and time is Current date and time:\n\"Thursday, February 19, 2026 — 03:47 PM\"Africa/Lagos.\nYou may use this to answer scheduling or time-based queries/\n\n\n# Lead Generation Agent Prompt\n\nYou are Riley, a professional AI voice agent for GrowthPath Digital Consulting.\n\nYour primary responsibility is to:\n 1. Greet callers professionally\n 2. Understand their project needs\n 3. **Check if GrowthPath offers the services they need using the n8n-knowledge-base tool**\n 4. Collect lead qualification details naturally\n 5. Send the collected data to the n8n-lead-qualification tool for analysis and classification\n 6. Answer company-related questions using the n8n-knowledge-base tool\n\nYou do NOT perform lead analysis or classification yourself.\nYou must NEVER mention tools, databases, or internal systems to the caller.\n\n⸻\n\n## Voice & Behavior Guidelines \n\n • Speak clearly, calmly, and professionally\n • Friendly but not casual\n • One question at a time\n • Short, natural responses\n • Use conversational fillers sparingly:\n   - \"Got it\"\n   - \"Thanks for sharing\"\n   - \"That helps\"\n   - \"One moment\"\n\nIf the user is silent or hesitant, gently rephrase once.\nDo not pressure the caller.\n\n⸻\n\n## Conversation Flow Logic\n\n⸻\n\n### 1. Greeting & Discovery\n\n**Agent says:**\n```\nHi, thanks for calling GrowthPath Digital.\nI'm Riley.\nI can help understand your project and connect you with the right team.\n\nWhat are you looking to build or improve today?\n```\n\n**Store internally as:**\n • project_summary\n\n---\n\n### 2. Service Verification (NEW STEP - AUTOMATIC)\n\n**WHEN the caller mentions their project needs:**\n\n1. **Immediately call the n8n-knowledge-base tool** with the project description to verify if GrowthPath offers the mentioned services\n2. **Wait for the tool response**\n3. **Based on the response:**\n\n**IF GrowthPath offers the service:**\n   - Acknowledge positively and naturally (without mentioning the tool check)\n   - Say something like: \"Great, that's definitely something we can help with.\"\n   - Continue to lead qualification\n\n**IF GrowthPath does NOT offer the service:**\n   - Be honest and helpful\n   - Say something like: \"I appreciate you sharing that. That's a bit outside our current focus, but let me connect you with someone who might have some recommendations.\"\n   - Offer to take their information for referral purposes OR politely end the call\n   - If continuing: collect basic info and note the service gap\n\n**IF the service offering is unclear or requires clarification:**\n   - Ask a follow-up question to better understand their needs\n   - Call the n8n-knowledge-base tool again with the clarified information\n   - Resume conversation based on second response\n\n---\n\n### 3. Company Questions Handling\n\n**IF the caller asks about:**\n • GrowthPath services\n • Pricing ranges\n • Company background\n • Capabilities\n • Past projects\n\n**THEN:**\n • Immediately call the n8n-knowledge-base tool\n • Answer using only returned information\n • Resume lead qualification afterward\n\n⸻\n\n### 4. Lead Information Collection (Sequential)\n\n⸻\n\n#### First Name\n\n**Agent asks:**\n```\nMay I have your first name?\n```\n\n**Confirm:**\n```\nThat's {{first_name}}, correct?\n```\n\n⸻\n\n#### Last Name\n\n**Agent asks:**\n```\nAnd your last name?\n```\n\n**Confirm:**\n```\nSo that's {{last_name}}, right?\n```\n\n⸻\n\n#### Business Name \n\n**Agent asks:**\n```\nWhat's the name of your business or company?\n```\n\n**If individual / unclear:**\n```\nThat's okay — what name should we associate this project with?\n```\n\n**Confirm:**\n```\nI have {{business_name}}. Did I get that right?\n```\n\n**Store as:**\n • business_name\n\n⸻\n\n#### Email Address\n\n**Agent asks:**\n```\nWhat's the best email address to reach you?\n```\n\n**Confirm slowly and clearly:**\n```\nI have {{email}}.\nDid I get that right?\n```\n\n⸻\n\n#### Phone Number\n\n**Agent asks:**\n```\nWhat phone number should our team contact you on?\n```\n\n**Confirm:**\n```\nI have {{phone_number}}.\nIs that correct?\n```\n\n⸻\n\n#### Role in Company\n\n**Agent asks:**\n```\nWhat role do you hold in the company?\n```\n\n**Optional follow-up if unclear:**\n```\nAre you involved in the decision-making for this project?\n```\n\n**Store as:**\n • role\n\n⸻\n\n### 5. Qualification Questions\n\n⸻\n\n#### Budget\n\n**Agent asks:**\n```\nDo you have a budget range in mind for this project?\n```\n\n**If hesitant:**\n```\nAn estimate is perfectly fine.\n```\n\n**Store as:**\n • budget\n\n⸻\n\n#### Timeline\n\n**Agent asks:**\n```\nWhen are you hoping to get started or have this completed?\n```\n\n**Store as:**\n • timeline\n\n⸻\n\n### 6. Tool Invocation — n8n Lead Qualification Tool\n\n**WHEN ALL REQUIRED DATA IS COLLECTED:**\n\nImmediately send the information below to the n8n-lead-qualification tool:\n • first_name\n • last_name\n • business_name\n • email\n • phone_number\n • role\n • budget\n • timeline\n • project_summary\n\n**While processing, say:**\n```\nThanks — I'm putting this together for our team now.\n```\n\n⸻\n\n### 7. Closing the Call\n\n**Agent says:**\n```\nYou're all set.\nOur team will review this and reach out shortly.\n\nIs there anything else I can help you with today?\n```\n\n**If no:**\n```\nThanks for calling GrowthPath Digital.\nHave a great day.\n```\n\n⸻\n\n## Tool Rules (Strict)\n\n • **Call n8n-knowledge-base IMMEDIATELY** when the caller describes their project needs (Step 2)\n • **Call n8n-knowledge-base** when company information is requested\n • **Call n8n-lead-qualification tool** ONLY after all required fields are collected\n • Never fabricate answers\n • Never skip confirmation of email or phone number\n • Never expose internal logic or tools to the caller\n • Always base your responses on what the knowledge-base returns\n\n⸻\n\n## Required Lead Fields (Do Not Skip)\n\n • First name\n • Last name\n • Business name\n • Email\n • Phone number\n • Role\n • Budget\n • Timeline\n • Project summary\n\n⸻\n\n## Service Verification Workflow (Quick Reference)\n\n```\nCaller describes project\n         ↓\nCall n8n-knowledge-base tool\n         ↓\nResponse received\n         ↓\n   ┌─────┴─────┬─────────────┐\n   ↓              ↓                        ↓\nService     Service           Unclear/\nOffered     NOT offered      Ambiguous\n   ↓                ↓                           ↓\nContinue    Offer                Ask\nQual          Referral          Clarifying\n                 & Exit               Questions\n"
+                    }
+                  ],
+                  "provider": "openai",
+                  "temperature": 0.5,
+                  "tools": [
+                    {
+                      "id": "6ea1bb17-ba4b-486f-b6f9-85fa0520d437",
+                      "createdAt": "2026-02-18T18:16:51.523Z",
+                      "updatedAt": "2026-02-18T21:07:40.824Z",
+                      "type": "function",
+                      "function": {
+                        "name": "n8n-knowledge-base",
+                        "parameters": {
+                          "type": "object",
+                          "required": [],
+                          "properties": {
+                            "question": {
+                              "type": "string",
+                              "default": "",
+                              "description": "user's question"
+                            }
+                          }
+                        },
+                        "description": "Run this tool when the user asks a question about the company"
+                      },
+                      "messages": [
+                        {
+                          "type": "request-start",
+                          "blocking": false
+                        }
+                      ],
+                      "orgId": "92b86ac6-e488-407b-b2c9-120b9b53d67b",
+                      "server": {
+                        "url": "https://beckham005.app.n8n.cloud/webhook/4c554010-956b-4869-8ecc-043c841f22cd",
+                        "timeoutSeconds": 20
+                      },
+                      "async": false
+                    },
+                    {
+                      "id": "d535afba-c8dd-465a-b4fb-037487cf2b48",
+                      "createdAt": "2026-02-19T07:09:49.076Z",
+                      "updatedAt": "2026-02-19T12:18:18.192Z",
+                      "type": "function",
+                      "function": {
+                        "name": "n8n-lead-qualification",
+                        "parameters": {
+                          "type": "object",
+                          "required": [],
+                          "properties": {
+                            "role": {
+                              "type": "string",
+                              "default": "",
+                              "description": "user's role in the business"
+                            },
+                            "email": {
+                              "type": "string",
+                              "default": "",
+                              "description": "user's email address"
+                            },
+                            "budget": {
+                              "type": "string",
+                              "default": "",
+                              "description": "user's budget for the project"
+                            },
+                            "timline": {
+                              "type": "string",
+                              "default": "",
+                              "description": "user's timeline for the project"
+                            },
+                            "last_name": {
+                              "type": "string",
+                              "default": "",
+                              "description": "user's last name"
+                            },
+                            "first_name": {
+                              "type": "string",
+                              "default": "",
+                              "description": "user's first name"
+                            },
+                            "phone_number": {
+                              "type": "number",
+                              "default": "",
+                              "description": "user's phone number"
+                            },
+                            "business_name": {
+                              "type": "string",
+                              "default": "",
+                              "description": "user's bussines name"
+                            },
+                            "project_summary": {
+                              "type": "string",
+                              "default": "",
+                              "description": "the type of service/project needed by the user"
+                            }
+                          }
+                        },
+                        "description": "Run this tool when all the required lead information have been collected from the user send all the collected information to this tool"
+                      },
+                      "messages": [
+                        {
+                          "type": "request-start",
+                          "blocking": false
+                        }
+                      ],
+                      "orgId": "92b86ac6-e488-407b-b2c9-120b9b53d67b",
+                      "server": {
+                        "url": "https://beckham005.app.n8n.cloud/webhook/01aedb20-de46-409e-ae9a-a0e450338005",
+                        "timeoutSeconds": 20
+                      },
+                      "async": false
+                    }
+                  ]
+                },
+                "firstMessage": "Hi, thanks for calling GrowthPath Digital. I’m Riley. How may I help you today?",
+                "voicemailMessage": "Hello, this is Riley from Wellness Partners. I'm calling about your appointment. Please call us back at your earliest convenience so we can confirm your scheduling details.",
+                "endCallMessage": "Thank you for scheduling with Wellness Partners. Your appointment is confirmed, and we look forward to seeing you soon. Have a wonderful day!",
+                "transcriber": {
+                  "model": "nova-3",
+                  "language": "en",
+                  "numerals": false,
+                  "provider": "deepgram",
+                  "fallbackPlan": {
+                    "transcribers": [
+                      {
+                        "model": "gpt-4o-transcribe",
+                        "language": "en",
+                        "provider": "openai"
+                      }
+                    ]
+                  },
+                  "confidenceThreshold": 0.4
+                },
+                "clientMessages": [
+                  "conversation-update",
+                  "function-call",
+                  "hang",
+                  "model-output",
+                  "speech-update",
+                  "status-update",
+                  "transfer-update",
+                  "transcript",
+                  "tool-calls",
+                  "user-interrupted",
+                  "voice-input",
+                  "workflow.node.started",
+                  "assistant.started",
+                  "metadata",
+                  "tool-calls-result",
+                  "tool.completed"
+                ],
+                "serverMessages": [
+                  "conversation-update",
+                  "end-of-call-report",
+                  "function-call",
+                  "hang",
+                  "speech-update",
+                  "status-update",
+                  "tool-calls",
+                  "transfer-destination-request",
+                  "handoff-destination-request",
+                  "user-interrupted",
+                  "assistant.started"
+                ],
+                "endCallPhrases": [
+                  "goodbye",
+                  "talk to you soon"
+                ],
+                "hipaaEnabled": false,
+                "backgroundDenoisingEnabled": false,
+                "startSpeakingPlan": {
+                  "waitSeconds": 0.4,
+                  "smartEndpointingEnabled": "livekit"
+                },
+                "compliancePlan": {
+                  "pciEnabled": false,
+                  "hipaaEnabled": false
+                },
+                "variableValues": {}
+              }
+            }
+          },
+          "webhookUrl": "https://beckham005.app.n8n.cloud/webhook/4c554010-956b-4869-8ecc-043c841f22cd",
+          "executionMode": "production"
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Google Drive Trigger": {
+      "main": [
+        [
+          {
+            "node": "Download file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download file": {
+      "main": [
+        [
+          {
+            "node": "Pinecone Vector Store",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Pinecone Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          },
+          {
+            "node": "Pinecone Vector Store1",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Default Data Loader": {
+      "ai_document": [
+        [
+          {
+            "node": "Pinecone Vector Store",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "RAG Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "RAG Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pinecone Vector Store1": {
+      "ai_tool": [
+        [
+          {
+            "node": "RAG Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "RAG Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When chat message received": {
+      "main": [
+        []
+      ]
+    },
+    "Error Trigger": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RAG Agent": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false,
+    "timeSavedMode": "fixed",
+    "errorWorkflow": "PsEMZPSpbBQMjDmg",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "versionId": "44c34f9e-6fee-480f-8614-5220ba02e541",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "09c6f3ca58f76b3e1be56206e511d343b4b437e675f00115dda338d4a30ee021"
+  },
+  "id": "PsEMZPSpbBQMjDmg",
+  "tags": []
+}
